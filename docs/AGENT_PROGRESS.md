@@ -508,3 +508,45 @@ Breakdown:
 **FINSURE PRODUCT COMPLETION — READY FOR DEMO**
 All functional requirements, ML ensemble serving, role-based workflows, evidence-grounded investigation, cryptographic audit chaining, accessible 3D visualizations with 2D fallbacks, and production deployment documentation are complete and verified.
 
+---
+
+# FinSure Evolution: Explainable Financial Document Verification & Investigation Platform
+
+## Document Verification Phase 1: Upload, Content-Type Verification, SHA-256 Deduplication & IDOR Enforcement
+
+### 1. Architectural Strategy & Finalized Design Decisions
+- **Storage Subsystem:** Local content-addressed file storage in `data/uploads/{sha256}.{ext}`. Absolute paths outside static web mounts. File serving is routed strictly through authorized streaming endpoints (`GET /api/v1/documents/{id}/download`).
+- **File Validation & Magic-Bytes Engine:** Validates binary signatures for PDF (`%PDF-`), PNG (`\x89PNG\r\n\x1a\n`), JPEG (`\xff\xd8\xff`), and TIFF (`II*\x00` / `MM\x00*`). Rejects spoofed extension/content mismatches and zero-byte files with HTTP 400 Bad Request.
+- **Route-Specific Upload Limit:** Global middleware ceiling remains 1MB, but document upload (`/api/v1/documents/upload`) and ledger import (`/api/v1/documents/ledger/import`) routes permit up to 25 MB payload streaming.
+- **Claim Labeling Invariant:** Enforces that payment receipts are strictly labeled `"payment_claim"`, never `"settled_payment"`. Bank statements are labeled `"statement_record"` and invoices `"invoice_claim"`. "Authentic" is never claimed.
+- **SHA-256 Deduplication:** Computes 64-char SHA-256 hex checksum. On identical hashes, avoids writing duplicate bytes to disk, marks `is_duplicate=True`, references `duplicate_of=original_doc_id`, and records a distinct `duplicate_detected` audit entry.
+- **IDOR Protection & RBAC Scoping:**
+  - Customers can only view and download their own documents (`user_id` equality). Any attempt by Customer B to access Customer A's document returns HTTP 403 Forbidden.
+  - Fraud Analysts, Compliance Officers, and Admins have cross-visibility to all documents on the platform.
+- **Immutable Document Audit Ledger:** Append-only event store (`data/finsure_documents.db` -> `document_audit`) tracking every upload, view, download, and duplicate detection.
+- **Trusted Ledger & Synthetic Seed:** Created `authorized_ledger` table and seeded 500 records from `data/processed/synthetic/transactions.csv` flagged explicitly as `is_synthetic=True` and `data_source="synthetic_seed"`. Analyst CSV import endpoint added under `/api/v1/documents/ledger/import`.
+
+### 2. Delivered Files
+- `backend/models/document.py`: `DocumentType`, `DocumentStatus`, `VerificationVerdict`, `ReviewStatus`, `DocumentRecord`, `DocumentUploadResponse`, `DocumentAuditEntry`, `AuthorizedTransaction`.
+- `backend/repositories/document_repo.py`: SQLite persistence for documents, audit logs, and authorized transactions (supporting `:memory:` and disk `data/finsure_documents.db`).
+- `backend/services/document_service.py`: Magic-byte validation, SHA-256 deduplication, content-addressed disk storage, IDOR access guard, OCR capability checker, and synthetic ledger seeder.
+- `backend/api/dependencies/document.py`: Dependency injection providers for document repo and service.
+- `backend/api/routes/documents.py`: Endpoints for document upload, listing, details, secure binary download, audit logs, OCR status, and authorized ledger import.
+- `backend/main.py`: Registered `documents.router` and configured route-specific 25MB ceiling.
+- `backend/tests/test_document_phase1.py`: 14 unit and integration tests covering upload, signature spoofing, size limits, deduplication, IDOR, audit logs, and ledger import.
+
+### 3. Test Execution Results
+- **Backend Test Discovery:** **162 / 162 PASSED (100% Green)** in 57.10s.
+  - 148 baseline tests (Phases 1–8) completely preserved.
+  - 14 new Phase 1 document tests passing.
+- **Frontend Verification Suite:** **91 / 91 PASSED (100% Green)**.
+- **TypeScript Static Analysis:** **0 errors (Clean)** (`npm run lint` / `tsc --noEmit`).
+
+### 4. Known Host Limitations
+- Host environment does not have native Tesseract OCR executable (`tesseract.exe`) in PATH or standard Program Files.
+- The platform gracefully reports `available: False` via `/api/v1/documents/ocr/status`, ensuring digital PDF text/table extraction operates smoothly while scanned image documents receive explainable `verification_incomplete` notices rather than crashing.
+
+### 5. Proposed Next Step
+- **Document Verification Phase 2:** Parsing Engine — Digital PDF text/table extraction with bounding boxes using `pypdf`, `pdfplumber`, and `pymupdf`, structured field schemas for Bank Statements, Invoices, and Payment Receipts, and graceful OCR fallback handling.
+
+

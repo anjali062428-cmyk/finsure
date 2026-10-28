@@ -22,7 +22,7 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
 from backend.services.model_service import ModelRegistry
-from backend.api.routes import health, transactions, auth, incidents, alerts, cases
+from backend.api.routes import health, transactions, auth, incidents, alerts, cases, documents
 
 # Configure structured logging
 logging.basicConfig(
@@ -89,18 +89,22 @@ async def security_and_telemetry_middleware(request: Request, call_next):
     t_start = time.perf_counter()
     req_id = request.headers.get("X-Request-ID", f"req_{uuid.uuid4().hex[:12]}")
 
-    # 1. Payload size check
+    # 1. Payload size check (25MB for document uploads, 1MB for all other endpoints)
     content_length = request.headers.get("Content-Length")
-    if content_length and int(content_length) > MAX_CONTENT_LENGTH:
-        return JSONResponse(
-            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
-            content={
-                "error": "PayloadTooLarge",
-                "message": f"Request body exceeds maximum permissible size ({MAX_CONTENT_LENGTH} bytes).",
-                "request_id": req_id
-            },
-            headers={"X-Request-ID": req_id}
-        )
+    if content_length:
+        cl_val = int(content_length)
+        is_doc_upload = request.url.path.startswith("/api/v1/documents/upload") or request.url.path.startswith("/api/v1/documents/ledger/import")
+        max_allowed = (25 * 1024 * 1024) if is_doc_upload else MAX_CONTENT_LENGTH
+        if cl_val > max_allowed:
+            return JSONResponse(
+                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                content={
+                    "error": "PayloadTooLarge",
+                    "message": f"Request body exceeds maximum permissible size ({max_allowed} bytes).",
+                    "request_id": req_id
+                },
+                headers={"X-Request-ID": req_id}
+            )
 
     # 2. Simple Rate Limiting check
     client_ip = request.client.host if request.client else "127.0.0.1"
@@ -195,6 +199,7 @@ app.include_router(auth.router)
 app.include_router(incidents.router)
 app.include_router(alerts.router)
 app.include_router(cases.router)
+app.include_router(documents.router)
 
 
 if __name__ == "__main__":
