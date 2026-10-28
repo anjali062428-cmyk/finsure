@@ -1,0 +1,228 @@
+{
+  "policy_version": "v1.0.0",
+  "validation_simulation": {
+    "policy_name": "Operational_v1.0.0_Validation",
+    "sample_size": 9313,
+    "thresholds": {
+      "approve_range": [
+        0,
+        39
+      ],
+      "step_up_range": [
+        40,
+        69
+      ],
+      "cooling_period_range": [
+        70,
+        89
+      ],
+      "block_range": [
+        90,
+        100
+      ]
+    },
+    "decision_mix": {
+      "approve_count": 9222,
+      "approve_pct": 99.02,
+      "step_up_count": 11,
+      "step_up_pct": 0.12,
+      "cooling_period_count": 6,
+      "cooling_period_pct": 0.06,
+      "block_count": 74,
+      "block_pct": 0.79
+    },
+    "financial_impact": {
+      "total_frauds": 88,
+      "total_legitimate": 9225,
+      "frauds_approved_missed": 4,
+      "frauds_intercepted": 84,
+      "fraud_catch_rate_pct": 95.45,
+      "legitimate_friction_count": 7,
+      "legitimate_friction_rate_pct": 0.08,
+      "fraud_loss_inr": 128000.0,
+      "friction_cost_inr": 1750.0,
+      "total_expected_cost_inr": 129750.0
+    }
+  },
+  "test_simulation": {
+    "policy_name": "Operational_v1.0.0_Test",
+    "sample_size": 9164,
+    "thresholds": {
+      "approve_range": [
+        0,
+        39
+      ],
+      "step_up_range": [
+        40,
+        69
+      ],
+      "cooling_period_range": [
+        70,
+        89
+      ],
+      "block_range": [
+        90,
+        100
+      ]
+    },
+    "decision_mix": {
+      "approve_count": 9040,
+      "approve_pct": 98.65,
+      "step_up_count": 13,
+      "step_up_pct": 0.14,
+      "cooling_period_count": 8,
+      "cooling_period_pct": 0.09,
+      "block_count": 103,
+      "block_pct": 1.12
+    },
+    "financial_impact": {
+      "total_frauds": 124,
+      "total_legitimate": 9040,
+      "frauds_approved_missed": 10,
+      "frauds_intercepted": 114,
+      "fraud_catch_rate_pct": 91.94,
+      "legitimate_friction_count": 10,
+      "legitimate_friction_rate_pct": 0.11,
+      "fraud_loss_inr": 320000.0,
+      "friction_cost_inr": 2500.0,
+      "total_expected_cost_inr": 322500.0
+    }
+  },
+  "validation_policy_comparison": {
+    "comparison_count": 3,
+    "policies": [
+      {
+        "policy_name": "Standard Operational (v1.0.0)",
+        "sample_size": 9313,
+        "thresholds": {
+          "approve_range": [
+            0,
+            39
+          ],
+          "step_up_range": [
+            40,
+            69
+          ],
+          "cooling_period_range": [
+            70,
+            89
+          ],
+          "block_range": [
+            90,
+            100
+          ]
+        },
+        "decision_mix": {
+          "approve_count": 9222,
+          "approve_pct": 99.02,
+          "step_up_count": 11,
+          "step_up_pct": 0.12,
+          "cooling_period_count": 6,
+          "cooling_period_pct": 0.06,
+          "block_count": 74,
+          "block_pct": 0.79
+        },
+        "financial_impact": {
+          "total_frauds": 88,
+          "total_legitimate": 9225,
+          "frauds_approved_missed": 4,
+          "frauds_intercepted": 84,
+          "fraud_catch_rate_pct": 95.45,
+          "legitimate_friction_count": 7,
+          "legitimate_friction_rate_pct": 0.08,
+          "fraud_loss_inr": 128000.0,
+          "friction_cost_inr": 1750.0,
+          "total_expected_cost_inr": 129750.0
+        }
+      },
+      {
+        "policy_name": "Conservative (Low Friction)",
+        "sample_size": 9313,
+        "thresholds": {
+          "approve_range": [
+            0,
+            49
+          ],
+          "step_up_range": [
+            50,
+            74
+          ],
+          "cooling_period_range": [
+            75,
+            92
+          ],
+          "block_range": [
+            93,
+            100
+          ]
+        },
+        "decision_mix": {
+          "approve_count": 9222,
+          "approve_pct": 99.02,
+          "step_up_count": 11,
+          "step_up_pct": 0.12,
+          "cooling_period_count": 6,
+          "cooling_period_pct": 0.06,
+          "block_count": 74,
+          "block_pct": 0.79
+        },
+        "financial_impact": {
+          "total_frauds": 88,
+          "total_legitimate": 9225,
+          "frauds_approved_missed": 4,
+          "frauds_intercepted": 84,
+          "fraud_catch_rate_pct": 95.45,
+          "legitimate_friction_count": 7,
+          "legitimate_friction_rate_pct": 0.08,
+          "fraud_loss_inr": 128000.0,
+          "friction_cost_inr": 1750.0,
+          "total_expected_cost_inr": 129750.0
+        }
+      },
+      {
+        "policy_name": "Aggressive (High Catch)",
+        "sample_size": 9313,
+        "thresholds": {
+          "approve_range": [
+            0,
+            25
+          ],
+          "step_up_range": [
+            26,
+            55
+          ],
+          "cooling_period_range": [
+            56,
+            80
+          ],
+          "block_range": [
+            81,
+            100
+          ]
+        },
+        "decision_mix": {
+          "approve_count": 9222,
+          "approve_pct": 99.02,
+          "step_up_count": 11,
+          "step_up_pct": 0.12,
+          "cooling_period_count": 0,
+          "cooling_period_pct": 0.0,
+          "block_count": 80,
+          "block_pct": 0.86
+        },
+        "financial_impact": {
+          "total_frauds": 88,
+          "total_legitimate": 9225,
+          "frauds_approved_missed": 4,
+          "frauds_intercepted": 84,
+          "fraud_catch_rate_pct": 95.45,
+          "legitimate_friction_count": 7,
+          "legitimate_friction_rate_pct": 0.08,
+          "fraud_loss_inr": 128000.0,
+          "friction_cost_inr": 1750.0,
+          "total_expected_cost_inr": 129750.0
+        }
+      }
+    ]
+  }
+}

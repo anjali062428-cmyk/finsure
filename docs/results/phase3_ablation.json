@@ -1,0 +1,362 @@
+{
+  "Config_A_Full_Ensemble": {
+    "model_name": "Config_A_Full_Ensemble",
+    "primary_metric": {
+      "name": "PR-AUC",
+      "value": 0.9058
+    },
+    "secondary_metrics": {
+      "roc_auc": 0.9516,
+      "recall_at_1pct_fpr": 0.9274,
+      "brier_score": 0.0019
+    },
+    "validation_threshold_selection": {
+      "selected_threshold": 0.01,
+      "validation_cost_inr": 129750.0,
+      "validation_fn": 4,
+      "validation_fp": 7,
+      "validation_default_cost_inr": 129750.0,
+      "validation_default_fn": 4,
+      "validation_default_fp": 7
+    },
+    "test_evaluation_at_default_0_50": {
+      "threshold": 0.5,
+      "test_cost_inr": 386500.0,
+      "false_negatives": 12,
+      "false_positives": 10,
+      "true_positives": 112,
+      "true_negatives": 9030,
+      "precision": 0.918,
+      "recall": 0.9032,
+      "f1_score": 0.9106,
+      "f2_score": 0.9061
+    },
+    "test_evaluation_at_validation_operating_point": {
+      "frozen_validation_threshold": 0.01,
+      "test_cost_inr": 290750.0,
+      "false_negatives": 9,
+      "false_positives": 11,
+      "true_positives": 115,
+      "true_negatives": 9029,
+      "precision": 0.9127,
+      "recall": 0.9274,
+      "f1_score": 0.92,
+      "f2_score": 0.9244
+    }
+  },
+  "Config_B_Minus_Sequence": {
+    "model_name": "Config_B_Minus_Sequence",
+    "primary_metric": {
+      "name": "PR-AUC",
+      "value": 0.9172
+    },
+    "secondary_metrics": {
+      "roc_auc": 0.9623,
+      "recall_at_1pct_fpr": 0.9435,
+      "brier_score": 0.0018
+    },
+    "validation_threshold_selection": {
+      "selected_threshold": 0.01,
+      "validation_cost_inr": 131000.0,
+      "validation_fn": 4,
+      "validation_fp": 12,
+      "validation_default_cost_inr": 320500.0,
+      "validation_default_fn": 10,
+      "validation_default_fp": 2
+    },
+    "test_evaluation_at_default_0_50": {
+      "threshold": 0.5,
+      "test_cost_inr": 577000.0,
+      "false_negatives": 18,
+      "false_positives": 4,
+      "true_positives": 106,
+      "true_negatives": 9036,
+      "precision": 0.9636,
+      "recall": 0.8548,
+      "f1_score": 0.906,
+      "f2_score": 0.8746
+    },
+    "test_evaluation_at_validation_operating_point": {
+      "frozen_validation_threshold": 0.01,
+      "test_cost_inr": 227250.0,
+      "false_negatives": 7,
+      "false_positives": 13,
+      "true_positives": 117,
+      "true_negatives": 9027,
+      "precision": 0.9,
+      "recall": 0.9435,
+      "f1_score": 0.9213,
+      "f2_score": 0.9345
+    }
+  },
+  "Config_C_Minus_GNN": {
+    "model_name": "Config_C_Minus_GNN",
+    "primary_metric": {
+      "name": "PR-AUC",
+      "value": 0.9137
+    },
+    "secondary_metrics": {
+      "roc_auc": 0.9443,
+      "recall_at_1pct_fpr": 0.9274,
+      "brier_score": 0.0019
+    },
+    "validation_threshold_selection": {
+      "selected_threshold": 0.01,
+      "validation_cost_inr": 130500.0,
+      "validation_fn": 4,
+      "validation_fp": 10,
+      "validation_default_cost_inr": 288250.0,
+      "validation_default_fn": 9,
+      "validation_default_fp": 1
+    },
+    "test_evaluation_at_default_0_50": {
+      "threshold": 0.5,
+      "test_cost_inr": 577250.0,
+      "false_negatives": 18,
+      "false_positives": 5,
+      "true_positives": 106,
+      "true_negatives": 9035,
+      "precision": 0.955,
+      "recall": 0.8548,
+      "f1_score": 0.9021,
+      "f2_score": 0.8731
+    },
+    "test_evaluation_at_validation_operating_point": {
+      "frozen_validation_threshold": 0.01,
+      "test_cost_inr": 291250.0,
+      "false_negatives": 9,
+      "false_positives": 13,
+      "true_positives": 115,
+      "true_negatives": 9027,
+      "precision": 0.8984,
+      "recall": 0.9274,
+      "f1_score": 0.9127,
+      "f2_score": 0.9215
+    }
+  },
+  "Config_D_Minus_Autoencoder": {
+    "model_name": "Config_D_Minus_Autoencoder",
+    "primary_metric": {
+      "name": "PR-AUC",
+      "value": 0.9053
+    },
+    "secondary_metrics": {
+      "roc_auc": 0.9543,
+      "recall_at_1pct_fpr": 0.9274,
+      "brier_score": 0.0021
+    },
+    "validation_threshold_selection": {
+      "selected_threshold": 0.01,
+      "validation_cost_inr": 129750.0,
+      "validation_fn": 4,
+      "validation_fp": 7,
+      "validation_default_cost_inr": 129750.0,
+      "validation_default_fn": 4,
+      "validation_default_fp": 7
+    },
+    "test_evaluation_at_default_0_50": {
+      "threshold": 0.5,
+      "test_cost_inr": 290750.0,
+      "false_negatives": 9,
+      "false_positives": 11,
+      "true_positives": 115,
+      "true_negatives": 9029,
+      "precision": 0.9127,
+      "recall": 0.9274,
+      "f1_score": 0.92,
+      "f2_score": 0.9244
+    },
+    "test_evaluation_at_validation_operating_point": {
+      "frozen_validation_threshold": 0.01,
+      "test_cost_inr": 291750.0,
+      "false_negatives": 9,
+      "false_positives": 15,
+      "true_positives": 115,
+      "true_negatives": 9025,
+      "precision": 0.8846,
+      "recall": 0.9274,
+      "f1_score": 0.9055,
+      "f2_score": 0.9185
+    }
+  },
+  "Config_E_Deep_Only": {
+    "model_name": "Config_E_Deep_Only",
+    "primary_metric": {
+      "name": "PR-AUC",
+      "value": 0.8602
+    },
+    "secondary_metrics": {
+      "roc_auc": 0.9434,
+      "recall_at_1pct_fpr": 0.8952,
+      "brier_score": 0.0025
+    },
+    "validation_threshold_selection": {
+      "selected_threshold": 0.01,
+      "validation_cost_inr": 129500.0,
+      "validation_fn": 4,
+      "validation_fp": 6,
+      "validation_default_cost_inr": 129500.0,
+      "validation_default_fn": 4,
+      "validation_default_fp": 6
+    },
+    "test_evaluation_at_default_0_50": {
+      "threshold": 0.5,
+      "test_cost_inr": 450500.0,
+      "false_negatives": 14,
+      "false_positives": 10,
+      "true_positives": 110,
+      "true_negatives": 9030,
+      "precision": 0.9167,
+      "recall": 0.8871,
+      "f1_score": 0.9016,
+      "f2_score": 0.8929
+    },
+    "test_evaluation_at_validation_operating_point": {
+      "frozen_validation_threshold": 0.01,
+      "test_cost_inr": 419000.0,
+      "false_negatives": 13,
+      "false_positives": 12,
+      "true_positives": 111,
+      "true_negatives": 9028,
+      "precision": 0.9024,
+      "recall": 0.8952,
+      "f1_score": 0.8988,
+      "f2_score": 0.8966
+    }
+  },
+  "Config_F_XGBoost_Alone": {
+    "model_name": "Config_F_XGBoost_Alone",
+    "primary_metric": {
+      "name": "PR-AUC",
+      "value": 0.926
+    },
+    "secondary_metrics": {
+      "roc_auc": 0.9655,
+      "recall_at_1pct_fpr": 0.9435,
+      "brier_score": 0.0023
+    },
+    "validation_threshold_selection": {
+      "selected_threshold": 0.8118,
+      "validation_cost_inr": 128750.0,
+      "validation_fn": 4,
+      "validation_fp": 3,
+      "validation_default_cost_inr": 129750.0,
+      "validation_default_fn": 4,
+      "validation_default_fp": 7
+    },
+    "test_evaluation_at_default_0_50": {
+      "threshold": 0.5,
+      "test_cost_inr": 226750.0,
+      "false_negatives": 7,
+      "false_positives": 11,
+      "true_positives": 117,
+      "true_negatives": 9029,
+      "precision": 0.9141,
+      "recall": 0.9435,
+      "f1_score": 0.9286,
+      "f2_score": 0.9375
+    },
+    "test_evaluation_at_validation_operating_point": {
+      "frozen_validation_threshold": 0.8118,
+      "test_cost_inr": 290250.0,
+      "false_negatives": 9,
+      "false_positives": 9,
+      "true_positives": 115,
+      "true_negatives": 9031,
+      "precision": 0.9274,
+      "recall": 0.9274,
+      "f1_score": 0.9274,
+      "f2_score": 0.9274
+    }
+  },
+  "Config_G_Sequence_Alone": {
+    "model_name": "Config_G_Sequence_Alone",
+    "primary_metric": {
+      "name": "PR-AUC",
+      "value": 0.8396
+    },
+    "secondary_metrics": {
+      "roc_auc": 0.9539,
+      "recall_at_1pct_fpr": 0.9274,
+      "brier_score": 0.0054
+    },
+    "validation_threshold_selection": {
+      "selected_threshold": 0.9207,
+      "validation_cost_inr": 129750.0,
+      "validation_fn": 4,
+      "validation_fp": 7,
+      "validation_default_cost_inr": 135000.0,
+      "validation_default_fn": 4,
+      "validation_default_fp": 28
+    },
+    "test_evaluation_at_default_0_50": {
+      "threshold": 0.5,
+      "test_cost_inr": 297250.0,
+      "false_negatives": 9,
+      "false_positives": 37,
+      "true_positives": 115,
+      "true_negatives": 9003,
+      "precision": 0.7566,
+      "recall": 0.9274,
+      "f1_score": 0.8333,
+      "f2_score": 0.8873
+    },
+    "test_evaluation_at_validation_operating_point": {
+      "frozen_validation_threshold": 0.9207,
+      "test_cost_inr": 291000.0,
+      "false_negatives": 9,
+      "false_positives": 12,
+      "true_positives": 115,
+      "true_negatives": 9028,
+      "precision": 0.9055,
+      "recall": 0.9274,
+      "f1_score": 0.9163,
+      "f2_score": 0.923
+    }
+  },
+  "Config_H_GNN_Alone": {
+    "model_name": "Config_H_GNN_Alone",
+    "primary_metric": {
+      "name": "PR-AUC",
+      "value": 0.1859
+    },
+    "secondary_metrics": {
+      "roc_auc": 0.7719,
+      "recall_at_1pct_fpr": 0.2581,
+      "brier_score": 0.2294
+    },
+    "validation_threshold_selection": {
+      "selected_threshold": 0.4753,
+      "validation_cost_inr": 977250.0,
+      "validation_fn": 28,
+      "validation_fp": 325,
+      "validation_default_cost_inr": 1167500.0,
+      "validation_default_fn": 34,
+      "validation_default_fp": 318
+    },
+    "test_evaluation_at_default_0_50": {
+      "threshold": 0.5,
+      "test_cost_inr": 2467750.0,
+      "false_negatives": 75,
+      "false_positives": 271,
+      "true_positives": 49,
+      "true_negatives": 8769,
+      "precision": 0.1531,
+      "recall": 0.3952,
+      "f1_score": 0.2207,
+      "f2_score": 0.3002
+    },
+    "test_evaluation_at_validation_operating_point": {
+      "frozen_validation_threshold": 0.4753,
+      "test_cost_inr": 2086250.0,
+      "false_negatives": 63,
+      "false_positives": 281,
+      "true_positives": 61,
+      "true_negatives": 8759,
+      "precision": 0.1784,
+      "recall": 0.4919,
+      "f1_score": 0.2618,
+      "f2_score": 0.364
+    }
+  }
+}

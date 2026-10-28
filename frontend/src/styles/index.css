@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+}
+
+:root {
+  /* FinSure Midnight Navy + Brand Intelligence Teal (#19D3C5) */
+  --background: #05080D;
+  --background-secondary: #080F17;
+  --surface: #0E1721;
+  --surface-elevated: #121E29;
+  --surface-sunken: #03060A;
+  --panel-deep: #0B131D;
+  --border: rgba(25, 211, 197, 0.12);
+  --border-strong: rgba(25, 211, 197, 0.25);
+  --text-primary: #F4F7FA;
+  --text-secondary: #8B9AAA;
+  --text-muted: #576574;
+  
+  /* Primary Brand Intelligence Color: Electric Teal */
+  --accent: #19D3C5;
+  --accent-hover: #26E6D8;
+  --accent-muted: rgba(25, 211, 197, 0.12);
+  --accent-teal: #19D3C5;
+  --accent-blue: #6C9CFF;
+  --accent-cyan: #19D3C5;
+  --accent-softCyan: #6FEBE0;
+
+  /* Semantic Status Indicators */
+  --success: #38D6A3;
+  --success-bg: rgba(56, 214, 163, 0.12);
+  --success-border: rgba(56, 214, 163, 0.28);
+
+  --warning: #FFB84D;
+  --warning-bg: rgba(255, 184, 77, 0.12);
+  --warning-border: rgba(255, 184, 77, 0.28);
+
+  --danger: #FF4D5F;
+  --danger-bg: rgba(255, 77, 95, 0.12);
+  --danger-border: rgba(255, 77, 95, 0.28);
+
+  --info: #6C9CFF;
+  --info-bg: rgba(108, 156, 255, 0.12);
+  --info-border: rgba(108, 156, 255, 0.28);
+
+  --risk-low: #38D6A3;
+  --risk-medium: #FFB84D;
+  --risk-high: #FF8533;
+  --risk-critical: #FF4D5F;
+}
+
+.light {
+  /* FinSure Institutional Light Environment */
+  --background: #F8FAFC;
+  --background-secondary: #F1F5F9;
+  --surface: #FFFFFF;
+  --surface-elevated: #F8FAFC;
+  --surface-sunken: #E2E8F0;
+  --panel-deep: #EDEFEF;
+  --border: rgba(15, 23, 42, 0.08);
+  --border-strong: rgba(15, 23, 42, 0.18);
+  --text-primary: #06111B;
+  --text-secondary: #334155;
+  --text-muted: #64748B;
+
+  --accent: #0891B2;
+  --accent-hover: #0E7490;
+  --accent-muted: rgba(8, 145, 178, 0.10);
+  --accent-cyan: #0284C7;
+  --accent-teal: #0D9488;
+  --accent-softCyan: #38BDF8;
+
+  --success: #15803D;
+  --success-bg: rgba(21, 128, 61, 0.10);
+  --success-border: rgba(21, 128, 61, 0.25);
+
+  --warning: #D97706;
+  --warning-bg: rgba(217, 119, 6, 0.10);
+  --warning-border: rgba(217, 119, 6, 0.25);
+
+  --danger: #DC2626;
+  --danger-bg: rgba(220, 38, 38, 0.10);
+  --danger-border: rgba(220, 38, 38, 0.25);
+
+  --info: #0284C7;
+  --info-bg: rgba(2, 132, 199, 0.10);
+  --info-border: rgba(2, 132, 199, 0.25);
+
+  --risk-low: #15803D;
+  --risk-medium: #D97706;
+  --risk-high: #EA580C;
+  --risk-critical: #DC2626;
+}
+
+/* Accessibility & Reduced Motion Overrides */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom Sleek Dark Navy Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 220, 240, 0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Universal accessible focus indicators */
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* FinSure Editorial Typography Classes */
+.font-display {
+  font-family: 'Space Grotesk', 'Sora', sans-serif;
+  letter-spacing: -0.03em;
+}
+
+.font-technical {
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+}
+
+/* Luminous Glows and Glass Surfaces */
+.glow-teal {
+  box-shadow: 0 0 40px -5px rgba(25, 211, 197, 0.25);
+}
+
+.glow-teal-sm {
+  box-shadow: 0 0 16px -2px rgba(25, 211, 197, 0.20);
+}
+
+.glow-blue {
+  box-shadow: 0 0 40px -5px rgba(108, 156, 255, 0.25);
+}
+
+.glow-critical {
+  box-shadow: 0 0 40px -5px rgba(255, 77, 95, 0.28);
+}
+
+.glass-surface {
+  background: rgba(14, 23, 33, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(25, 211, 197, 0.12);
+}
+
+.glass-nav {
+  background: rgba(5, 8, 13, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(25, 211, 197, 0.14);
+}
+
+/* Subtle Spatial Background Grids */
+.bg-grid-pattern {
+  background-image: radial-gradient(rgba(25, 211, 197, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.bg-dot-dense {
+  background-image: radial-gradient(rgba(25, 211, 197, 0.12) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+

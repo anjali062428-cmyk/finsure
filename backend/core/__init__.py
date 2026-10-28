@@ -1,0 +1,3 @@
+"""
+FinSure Core Configuration Package
+"""

@@ -1,0 +1,48 @@
+{
+  "dataset_name": "FinSure Synthetic UPI",
+  "train_samples": 36550,
+  "n_folds": 5,
+  "fold_details": [
+    {
+      "fold": 1,
+      "train_samples": 29240,
+      "holdout_samples": 7310,
+      "holdout_frauds": 71,
+      "elapsed_seconds": 72.43
+    },
+    {
+      "fold": 2,
+      "train_samples": 29240,
+      "holdout_samples": 7310,
+      "holdout_frauds": 71,
+      "elapsed_seconds": 68.05
+    },
+    {
+      "fold": 3,
+      "train_samples": 29240,
+      "holdout_samples": 7310,
+      "holdout_frauds": 72,
+      "elapsed_seconds": 68.92
+    },
+    {
+      "fold": 4,
+      "train_samples": 29240,
+      "holdout_samples": 7310,
+      "holdout_frauds": 72,
+      "elapsed_seconds": 70.07
+    },
+    {
+      "fold": 5,
+      "train_samples": 29240,
+      "holdout_samples": 7310,
+      "holdout_frauds": 72,
+      "elapsed_seconds": 70.94
+    }
+  ],
+  "oof_feature_names": [
+    "prob_xgb",
+    "prob_seq",
+    "prob_gnn",
+    "score_ae"
+  ]
+}

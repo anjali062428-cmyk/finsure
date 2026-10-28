@@ -1,0 +1,83 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Caches
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.cache/
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
+# Raw Data & Extracted Datasets (Do NOT commit multi-hundred-MB/GB datasets)
+data/raw/
+data/processed/
+data/cache/
+data/uploads/
+data/*.db
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.h5
+*.hdf5
+
+# Allow template and documentation data files
+!docs/**
+!ml/data/schemas/**
+
+# Model artifacts and weights
+ml/artifacts/
+*.onnx
+*.pt
+*.pth
+*.bin
+*.joblib
+*.pkl
+mlflow/
+mlruns/
+
+# Large generated reports and evidence packs
+reference/reports/generated/
+*.pdf
+!reference/*.pdf
+!reference/reports/FinSure_FS-2026-000481_analyst.pdf
+
+# Logs & temporary files
+logs/
+*.log
+scratch/
+tmp/
+temp/
+
+# Node / Frontend build artifacts
+node_modules/
+frontend/dist/
+frontend/.next/
+frontend/build/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+desktop.ini

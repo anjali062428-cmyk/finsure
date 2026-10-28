@@ -1,0 +1,285 @@
+{
+  "metadata": {
+    "timestamp": "2026-09-28T15:35:00.251853+00:00",
+    "pipeline_version": "2.0.0",
+    "seed": 42,
+    "feature_count": 36,
+    "split_info": {
+      "split_strategy": "Strict Chronological (Time-Based)",
+      "boundaries": {
+        "train_end": "2026-03-01T23:59:59",
+        "val_end": "2026-03-16T23:59:59",
+        "test_end": "2026-04-01T23:59:59"
+      },
+      "feature_count": 36,
+      "train": {
+        "start": "2026-01-01 00:16:33.073165",
+        "end": "2026-03-01 23:52:00.490677",
+        "total_rows": 36550,
+        "fraud_count": 358,
+        "fraud_prevalence_pct": 0.979
+      },
+      "validation": {
+        "start": "2026-03-02 00:12:24.331894",
+        "end": "2026-03-16 23:57:16.317315",
+        "total_rows": 9313,
+        "fraud_count": 88,
+        "fraud_prevalence_pct": 0.945
+      },
+      "test": {
+        "start": "2026-03-17 00:32:30.317620",
+        "end": "2026-03-31 23:53:02.713332",
+        "total_rows": 9164,
+        "fraud_count": 124,
+        "fraud_prevalence_pct": 1.353
+      }
+    }
+  },
+  "phase1_baseline_comparison": {
+    "model": "HistGradientBoosting (Raw 8 features)",
+    "pr_auc": 0.5508,
+    "split": "Temporal 70/30"
+  },
+  "logistic_regression": {
+    "validation_cost_optimization": {
+      "default_threshold": 0.5,
+      "default_cost_inr": 201500.0,
+      "optimal_threshold": 0.9306,
+      "minimum_cost_inr": 134500.0,
+      "cost_savings_on_validation": 67000.0,
+      "validation_optimal_point": {
+        "threshold": 0.9306,
+        "total_cost": 134500.0,
+        "fraud_loss": 128000.0,
+        "friction_loss": 6500.0,
+        "false_negatives": 4,
+        "false_positives": 26,
+        "true_positives": 84,
+        "true_negatives": 9199,
+        "precision": 0.7636,
+        "recall": 0.9545
+      },
+      "validation_default_point": {
+        "threshold": 0.5,
+        "total_cost": 201500.0,
+        "fraud_loss": 128000.0,
+        "friction_loss": 73500.0,
+        "false_negatives": 4,
+        "false_positives": 294,
+        "true_positives": 84,
+        "true_negatives": 8931,
+        "precision": 0.2222,
+        "recall": 0.9545
+      }
+    },
+    "test_evaluation": {
+      "at_default_threshold_0_50": {
+        "metrics": {
+          "model_name": "Logistic Regression (Default 0.50)",
+          "operating_threshold": 0.5,
+          "primary_metric": {
+            "name": "PR-AUC",
+            "value": 0.8013
+          },
+          "secondary_metrics": {
+            "roc_auc": 0.9511,
+            "recall_at_1pct_fpr": 0.9274,
+            "precision": 0.2246,
+            "recall": 0.9274,
+            "f1_score": 0.3616,
+            "f2_score": 0.5704,
+            "brier_score": 0.0388
+          },
+          "confusion_matrix": {
+            "true_negatives": 8643,
+            "false_positives": 397,
+            "false_negatives": 9,
+            "true_positives": 115
+          },
+          "latency_ms": {
+            "batch_avg_per_sample": 0.0,
+            "p50_ms": 0.128,
+            "p95_ms": 0.26,
+            "p99_ms": 0.419
+          }
+        },
+        "test_total_cost_inr": 387250
+      },
+      "at_validation_optimal_threshold": {
+        "threshold": 0.9306,
+        "metrics": {
+          "model_name": "Logistic Regression (Val-Optimal 0.9306)",
+          "operating_threshold": 0.9306,
+          "primary_metric": {
+            "name": "PR-AUC",
+            "value": 0.8013
+          },
+          "secondary_metrics": {
+            "roc_auc": 0.9511,
+            "recall_at_1pct_fpr": 0.9274,
+            "precision": 0.7347,
+            "recall": 0.871,
+            "f1_score": 0.797,
+            "f2_score": 0.8398,
+            "brier_score": 0.0388
+          },
+          "confusion_matrix": {
+            "true_negatives": 9001,
+            "false_positives": 39,
+            "false_negatives": 16,
+            "true_positives": 108
+          },
+          "latency_ms": {
+            "batch_avg_per_sample": 0.0,
+            "p50_ms": 0.145,
+            "p95_ms": 0.331,
+            "p99_ms": 0.494
+          }
+        },
+        "test_total_cost_inr": 521750
+      }
+    }
+  },
+  "xgboost": {
+    "validation_cost_optimization": {
+      "default_threshold": 0.5,
+      "default_cost_inr": 129750.0,
+      "optimal_threshold": 0.8118,
+      "minimum_cost_inr": 128750.0,
+      "cost_savings_on_validation": 1000.0,
+      "validation_optimal_point": {
+        "threshold": 0.8118,
+        "total_cost": 128750.0,
+        "fraud_loss": 128000.0,
+        "friction_loss": 750.0,
+        "false_negatives": 4,
+        "false_positives": 3,
+        "true_positives": 84,
+        "true_negatives": 9222,
+        "precision": 0.9655,
+        "recall": 0.9545
+      },
+      "validation_default_point": {
+        "threshold": 0.5,
+        "total_cost": 129750.0,
+        "fraud_loss": 128000.0,
+        "friction_loss": 1750.0,
+        "false_negatives": 4,
+        "false_positives": 7,
+        "true_positives": 84,
+        "true_negatives": 9218,
+        "precision": 0.9231,
+        "recall": 0.9545
+      }
+    },
+    "test_evaluation": {
+      "at_default_threshold_0_50": {
+        "metrics": {
+          "model_name": "XGBoost (Default 0.50)",
+          "operating_threshold": 0.5,
+          "primary_metric": {
+            "name": "PR-AUC",
+            "value": 0.926
+          },
+          "secondary_metrics": {
+            "roc_auc": 0.9655,
+            "recall_at_1pct_fpr": 0.9435,
+            "precision": 0.9141,
+            "recall": 0.9435,
+            "f1_score": 0.9286,
+            "f2_score": 0.9375,
+            "brier_score": 0.0023
+          },
+          "confusion_matrix": {
+            "true_negatives": 9029,
+            "false_positives": 11,
+            "false_negatives": 7,
+            "true_positives": 117
+          },
+          "latency_ms": {
+            "batch_avg_per_sample": 0.002,
+            "p50_ms": 1.206,
+            "p95_ms": 1.795,
+            "p99_ms": 2.048
+          }
+        },
+        "test_total_cost_inr": 226750
+      },
+      "at_validation_optimal_threshold": {
+        "threshold": 0.8118,
+        "metrics": {
+          "model_name": "XGBoost (Val-Optimal 0.8118)",
+          "operating_threshold": 0.8118,
+          "primary_metric": {
+            "name": "PR-AUC",
+            "value": 0.926
+          },
+          "secondary_metrics": {
+            "roc_auc": 0.9655,
+            "recall_at_1pct_fpr": 0.9435,
+            "precision": 0.9274,
+            "recall": 0.9274,
+            "f1_score": 0.9274,
+            "f2_score": 0.9274,
+            "brier_score": 0.0023
+          },
+          "confusion_matrix": {
+            "true_negatives": 9031,
+            "false_positives": 9,
+            "false_negatives": 9,
+            "true_positives": 115
+          },
+          "latency_ms": {
+            "batch_avg_per_sample": 0.002,
+            "p50_ms": 1.277,
+            "p95_ms": 1.989,
+            "p99_ms": 2.642
+          }
+        },
+        "test_total_cost_inr": 290250
+      }
+    },
+    "top_features": [
+      [
+        "user_daily_limit_ratio",
+        0.2897311747074127
+      ],
+      [
+        "is_out_of_home_city",
+        0.15119512379169464
+      ],
+      [
+        "amt_to_user_median",
+        0.04941911622881889
+      ],
+      [
+        "is_new_device_and_night",
+        0.03986896574497223
+      ],
+      [
+        "dist_from_prev_txn_km",
+        0.03730149567127228
+      ],
+      [
+        "amount",
+        0.035617291927337646
+      ],
+      [
+        "device_familiarity_count",
+        0.03530369699001312
+      ],
+      [
+        "time_since_prev_txn_sec",
+        0.027741122990846634
+      ],
+      [
+        "payee_familiarity_count",
+        0.027598561719059944
+      ],
+      [
+        "log_amount",
+        0.027249490842223167
+      ]
+    ]
+  }
+}

@@ -1,0 +1,69 @@
+# FinSure Risk Scoring and Operational Thresholds Configuration
+# Version: v1.0.0
+# Effective Date: 2026-09-28
+# Source: Phase 3 Validation-Selected Operating Point & Decision Cost Framework
+
+threshold_policy:
+  version: "v1.0.0"
+  effective_date: "2026-09-28T00:00:00Z"
+  description: "Operational risk score bands and deterministic decision thresholds derived from validation set cost curve."
+  author: "FinSure Risk Analytics & Safety Engineering"
+  frozen_for_evaluation: true
+
+cost_parameters:
+  avg_fraud_loss_inr: 32000.0
+  friction_cost_inr: 250.0
+
+# Relationship Contract:
+# 1. Model Calibrated Probability: P ∈ [0.0, 1.0]
+# 2. Unified User-Facing Risk Score: S = round(100 * P) ∈ [0, 100]
+# 3. Decision Actions are deterministically mapped from Risk Score S:
+decision_thresholds:
+  approve:
+    min_score: 0
+    max_score: 39
+    action: "approve"
+    description: "Transaction approved instantly without customer friction."
+
+  step_up_otp:
+    min_score: 40
+    max_score: 69
+    action: "step_up"
+    description: "Medium risk: Step-up authentication challenge required via verified channel (OTP)."
+
+  cooling_period:
+    min_score: 70
+    max_score: 89
+    action: "cooling_period"
+    description: "High risk: 2-hour cooling period imposed on high-value transfer to unverified/new beneficiary."
+
+  block:
+    min_score: 90
+    max_score: 100
+    action: "block"
+    description: "Critical risk: Transaction blocked immediately, alert generated, customer notified."
+
+risk_bands:
+  low:
+    min_score: 0
+    max_score: 39
+    display_label: "Low Risk"
+    badge_color: "#13A89E" # FinSure Brand Teal
+
+  medium:
+    min_score: 40
+    max_score: 69
+    display_label: "Medium Risk"
+    badge_color: "#E8A33D" # FinSure Brand Amber
+
+  high:
+    min_score: 70
+    max_score: 89
+    display_label: "High Risk"
+    badge_color: "#EA580C" # FinSure Brand Orange
+
+  critical:
+    min_score: 90
+    max_score: 100
+    display_label: "Critical Risk"
+    badge_color: "#D64545" # FinSure Brand Red

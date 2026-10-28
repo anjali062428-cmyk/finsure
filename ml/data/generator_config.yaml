@@ -1,0 +1,61 @@
+# FinSure Synthetic UPI Generator Configuration
+# Aligned with Master Prompt Section 5.1.1 and SRS Section 6.1
+
+generator:
+  seed: 42
+  version: "1.0.0"
+  description: "Seeded realistic Indian UPI transaction and fraud event generator"
+
+simulation:
+  start_date: "2026-01-01T00:00:00"
+  duration_days: 90
+  num_users: 1000
+  num_mule_rings: 5
+  mules_per_ring: 4
+  merchants_count: 150
+  target_fraud_rate: 0.012  # 1.2% fraud prevalence (within 0.2% - 2.0% requirement)
+
+realism_knobs:
+  label_noise_rate: 0.015   # 1.5% label flipping noise
+  hard_negatives_rate: 0.05 # 5% of legit transactions have anomalous attributes (travel, night, large rent)
+  concept_drift_window_days: 15 # In the final 15 days, introduce zero-day attack pattern unseen in training
+  delayed_label_days_mean: 3.5
+
+user_profiles:
+  income_bands:
+    low: { weight: 0.35, min_amt: 20, max_amt: 3000, daily_limit: 25000 }
+    mid: { weight: 0.45, min_amt: 50, max_amt: 20000, daily_limit: 100000 }
+    high: { weight: 0.20, min_amt: 100, max_amt: 85000, daily_limit: 200000 }
+  cities:
+    - { name: "Mumbai", state: "Maharashtra", weight: 0.22 }
+    - { name: "Delhi", state: "Delhi", weight: 0.20 }
+    - { name: "Bengaluru", state: "Karnataka", weight: 0.18 }
+    - { name: "Hyderabad", state: "Telangana", weight: 0.12 }
+    - { name: "Pune", state: "Maharashtra", weight: 0.10 }
+    - { name: "Ahmedabad", state: "Gujarat", weight: 0.08 }
+    - { name: "Jaipur", state: "Rajasthan", weight: 0.06 }
+    - { name: "Lucknow", state: "Uttar Pradesh", weight: 0.04 }
+
+fraud_scenarios:
+  account_takeover:
+    weight: 0.30
+    description: "New device login + new payee + limit raise + large nocturnal transfer"
+    typical_amount_multiplier: 4.5
+    night_hour_prob: 0.75
+  mule_account:
+    weight: 0.25
+    description: "Multiple victim accounts funneled into shared device/payee cluster"
+    fan_in_count: 5
+    rapid_dispersal_minutes: 10
+  collect_request_scam:
+    weight: 0.20
+    description: "Inverted collect-request disguised as refund or lottery prize"
+    fake_merchant_prob: 0.85
+  phishing_or_social_engineering:
+    weight: 0.15
+    description: "Urgent transfer to fresh unknown VPA after deceptive contact"
+    urgency_burst_prob: 0.80
+  card_testing:
+    weight: 0.10
+    description: "Rapid sequence of micro-transfers (< Rs 50) followed by high value transfer"
+    micro_trans_count: 4
