@@ -54,7 +54,7 @@ const DEMO_DOCUMENTS: DemoDocument[] = [
     claimLabel: 'bank_statement',
     verdict: 'no_significant_anomalies',
     verdictLabel: 'Consistent (No Anomalies)',
-    verdictColor: 'text-[#456B58] bg-[#456B58]/15 border-[#456B58]/35',
+    verdictColor: 'text-[#38D6A3] bg-[#38D6A3]/15 border-[#38D6A3]/35',
     isDuplicate: false,
     sha256: '7d2f9a1c8b3e4d5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f',
     fileSize: '412 KB',
@@ -100,7 +100,7 @@ const DEMO_DOCUMENTS: DemoDocument[] = [
     claimLabel: 'commercial_invoice',
     verdict: 'review_recommended',
     verdictLabel: 'Review Recommended (Math Mismatch)',
-    verdictColor: 'text-[#9E3D34] bg-[#9E3D34]/15 border-[#9E3D34]/35',
+    verdictColor: 'text-[#FF4D5F] bg-[#FF4D5F]/15 border-[#FF4D5F]/35',
     isDuplicate: false,
     sha256: '9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b',
     fileSize: '620 KB',
@@ -152,7 +152,7 @@ const DEMO_DOCUMENTS: DemoDocument[] = [
     claimLabel: 'payment_claim',
     verdict: 'no_significant_anomalies',
     verdictLabel: 'Matched to Settlement Ledger',
-    verdictColor: 'text-[#456B58] bg-[#456B58]/15 border-[#456B58]/35',
+    verdictColor: 'text-[#38D6A3] bg-[#38D6A3]/15 border-[#38D6A3]/35',
     isDuplicate: false,
     sha256: '1e66c2b189a04f9812e95a892b0c1e8934fa1298cde489a12b984fa1290a76f2',
     fileSize: '890 KB',
@@ -197,7 +197,7 @@ const DEMO_DOCUMENTS: DemoDocument[] = [
     claimLabel: 'commercial_invoice',
     verdict: 'high_risk_indicators',
     verdictLabel: 'Duplicate Submission Detected',
-    verdictColor: 'text-[#9E3D34] bg-[#9E3D34]/15 border-[#9E3D34]/35',
+    verdictColor: 'text-[#FF4D5F] bg-[#FF4D5F]/15 border-[#FF4D5F]/35',
     isDuplicate: true,
     duplicateOf: 'doc_inv_2026_02',
     sha256: '9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b',
@@ -252,14 +252,14 @@ export const ForensicProductPreview: React.FC = () => {
   };
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-6 text-left">
       {/* Top Selector: Choose from 4 forensic scenarios */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#D0C5B1]/15 pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
         <div>
-          <span className="text-[11px] font-mono tracking-widest text-[#A68B61] uppercase block font-semibold">
+          <span className="text-[11px] font-mono tracking-widest text-[#19D3FF] uppercase block font-semibold">
             Interactive Product Demonstration
           </span>
-          <h2 className="text-xl sm:text-2xl font-serif font-bold text-[#E9E3D5] mt-0.5">
+          <h2 className="text-xl sm:text-2xl font-display font-bold text-[#F4F7FA] mt-0.5">
             Real Financial Document Inspection Console
           </h2>
         </div>
@@ -272,10 +272,10 @@ export const ForensicProductPreview: React.FC = () => {
               <button
                 key={doc.id}
                 onClick={() => setSelectedDocId(doc.id)}
-                className={`px-3 py-1.5 rounded-sm text-xs font-mono transition-all flex items-center space-x-1.5 cursor-pointer ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center space-x-1.5 cursor-pointer ${
                   isSelected
-                    ? 'bg-[#292B28] text-[#A68B61] border border-[#A68B61]/50 shadow-sm font-bold'
-                    : 'bg-[#222421] text-[#D0C5B1] border border-[#D0C5B1]/15 hover:text-[#E9E3D5] hover:border-[#D0C5B1]/30'
+                    ? 'bg-[#19D3FF]/15 text-[#19D3FF] border border-[#19D3FF]/50 shadow-[0_0_12px_rgba(25,211,255,0.25)] font-bold'
+                    : 'bg-[#0D1524] text-[#8B9AAA] border border-white/10 hover:text-[#F4F7FA] hover:border-[#19D3FF]/30'
                 }`}
               >
                 <FileText className="w-3.5 h-3.5 shrink-0" />
@@ -289,7 +289,7 @@ export const ForensicProductPreview: React.FC = () => {
                     : 'Payment Claim'}
                 </span>
                 {doc.isDuplicate && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#9E3D34] shrink-0" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#FF4D5F] shrink-0 animate-pulse" />
                 )}
               </button>
             );
@@ -298,75 +298,75 @@ export const ForensicProductPreview: React.FC = () => {
       </div>
 
       {/* Main Inspection Console Card */}
-      <div className="rounded-sm bg-[#222421] border border-[#D0C5B1]/20 shadow-md overflow-hidden">
+      <div className="rounded-2xl bg-[#080F17] border border-[rgba(25,211,255,0.2)] shadow-[0_16px_40px_rgba(0,0,0,0.7)] overflow-hidden">
         {/* Document Header & Metadata Banner */}
-        <div className="p-4 sm:p-5 bg-[#1C1E1B] border-b border-[#D0C5B1]/15 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="p-4 sm:p-5 bg-[#0D1524] border-b border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="space-y-1.5">
             <div className="flex items-center space-x-2">
-              <span className="px-2 py-0.5 rounded-sm text-[10px] font-mono uppercase bg-[#292B28] text-[#A68B61] border border-[#A68B61]/30 font-bold">
+              <span className="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-[#19D3FF]/10 text-[#19D3FF] border border-[#19D3FF]/30 font-bold">
                 {currentDoc.claimLabel}
               </span>
-              <span className="text-xs text-[#77766B] font-mono">{currentDoc.fileSize}</span>
+              <span className="text-xs text-[#8B9AAA] font-mono">{currentDoc.fileSize}</span>
               {currentDoc.isDuplicate && (
-                <span className="px-2 py-0.5 rounded-sm text-[10px] font-mono uppercase bg-[#9E3D34]/20 text-[#9E3D34] border border-[#9E3D34]/30 font-bold">
+                <span className="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-[#FF4D5F]/20 text-[#FF4D5F] border border-[#FF4D5F]/30 font-bold">
                   Duplicate
                 </span>
               )}
             </div>
-            <h3 className="text-base sm:text-lg font-mono font-bold text-[#E9E3D5] flex items-center space-x-2">
-              <FileText className="w-4 h-4 text-[#A68B61] shrink-0" />
+            <h3 className="text-base sm:text-lg font-mono font-bold text-[#F4F7FA] flex items-center space-x-2">
+              <FileText className="w-4 h-4 text-[#19D3FF] shrink-0" />
               <span className="truncate max-w-[280px] sm:max-w-md">{currentDoc.name}</span>
             </h3>
           </div>
 
           {/* Verdict Pill & SHA-256 Box */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            <div className="flex items-center space-x-1.5 font-mono text-xs bg-[#222421] px-3 py-1.5 rounded-sm border border-[#D0C5B1]/15">
-              <span className="text-[#77766B]">SHA-256:</span>
-              <span className="text-[#D0C5B1] truncate max-w-[110px]" title={currentDoc.sha256}>
+            <div className="flex items-center space-x-1.5 font-mono text-xs bg-[#05080D] px-3 py-1.5 rounded-lg border border-white/10">
+              <span className="text-[#8B9AAA]">SHA-256:</span>
+              <span className="text-[#F4F7FA] truncate max-w-[110px]" title={currentDoc.sha256}>
                 {currentDoc.sha256.substring(0, 8)}...{currentDoc.sha256.substring(58)}
               </span>
               <button
                 onClick={() => handleCopyHash(currentDoc.sha256)}
-                className="p-1 text-[#77766B] hover:text-[#E9E3D5] transition-colors cursor-pointer"
+                className="p-1 text-[#8B9AAA] hover:text-[#19D3FF] transition-colors cursor-pointer"
                 title="Copy SHA-256 Hash"
               >
                 {copiedHash ? (
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#456B58]" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#38D6A3]" />
                 ) : (
                   <Copy className="w-3.5 h-3.5" />
                 )}
               </button>
             </div>
 
-            <span className={`px-3 py-1.5 rounded-sm text-xs font-mono font-semibold border ${currentDoc.verdictColor}`}>
+            <span className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold border ${currentDoc.verdictColor}`}>
               {currentDoc.verdictLabel}
             </span>
           </div>
         </div>
 
         {/* Engine Telemetry Ribbon */}
-        <div className="px-4 sm:px-5 py-2.5 bg-[#1C1E1B] border-b border-[#D0C5B1]/10 flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono text-[#D0C5B1]">
+        <div className="px-4 sm:px-5 py-2.5 bg-[#05080D] border-b border-white/10 flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono text-[#8B9AAA]">
           <div className="flex items-center space-x-2">
-            <Scan className="w-3.5 h-3.5 text-[#A68B61]" />
-            <span>Extraction Engine: <strong className="text-[#E9E3D5]">{currentDoc.ocrMethod}</strong></span>
+            <Scan className="w-3.5 h-3.5 text-[#19D3FF]" />
+            <span>Extraction Engine: <strong className="text-[#F4F7FA]">{currentDoc.ocrMethod}</strong></span>
           </div>
           <div>
-            <span>Parse Latency: <strong className="text-[#A68B61]">{currentDoc.executionTime}</strong></span>
+            <span>Parse Latency: <strong className="text-[#19D3FF]">{currentDoc.executionTime}</strong></span>
           </div>
-          <div className="text-[10px] text-[#77766B]">
+          <div className="text-[10px] text-[#576574]">
             [Synthetic Demonstration Dataset Reference]
           </div>
         </div>
 
         {/* Sub-Navigation Tabs */}
-        <div className="flex border-b border-[#D0C5B1]/15 px-4 sm:px-5 bg-[#222421] gap-6 text-xs font-mono overflow-x-auto">
+        <div className="flex border-b border-white/10 px-4 sm:px-5 bg-[#0A101C] gap-6 text-xs font-mono overflow-x-auto">
           <button
             onClick={() => setActiveTab('checks')}
             className={`py-3 border-b-2 font-medium transition-colors cursor-pointer flex items-center space-x-1.5 ${
               activeTab === 'checks'
-                ? 'border-[#A68B61] text-[#A68B61] font-bold'
-                : 'border-transparent text-[#77766B] hover:text-[#E9E3D5]'
+                ? 'border-[#19D3FF] text-[#19D3FF] font-bold'
+                : 'border-transparent text-[#8B9AAA] hover:text-[#F4F7FA]'
             }`}
           >
             <Shield className="w-3.5 h-3.5" />
@@ -377,8 +377,8 @@ export const ForensicProductPreview: React.FC = () => {
             onClick={() => setActiveTab('fields')}
             className={`py-3 border-b-2 font-medium transition-colors cursor-pointer flex items-center space-x-1.5 ${
               activeTab === 'fields'
-                ? 'border-[#A68B61] text-[#A68B61] font-bold'
-                : 'border-transparent text-[#77766B] hover:text-[#E9E3D5]'
+                ? 'border-[#19D3FF] text-[#19D3FF] font-bold'
+                : 'border-transparent text-[#8B9AAA] hover:text-[#F4F7FA]'
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
@@ -389,8 +389,8 @@ export const ForensicProductPreview: React.FC = () => {
             onClick={() => setActiveTab('findings')}
             className={`py-3 border-b-2 font-medium transition-colors cursor-pointer flex items-center space-x-1.5 ${
               activeTab === 'findings'
-                ? 'border-[#A68B61] text-[#A68B61] font-bold'
-                : 'border-transparent text-[#77766B] hover:text-[#E9E3D5]'
+                ? 'border-[#19D3FF] text-[#19D3FF] font-bold'
+                : 'border-transparent text-[#8B9AAA] hover:text-[#F4F7FA]'
             }`}
           >
             <AlertCircle className="w-3.5 h-3.5" />
@@ -401,8 +401,8 @@ export const ForensicProductPreview: React.FC = () => {
             onClick={() => setActiveTab('audit')}
             className={`py-3 border-b-2 font-medium transition-colors cursor-pointer flex items-center space-x-1.5 ${
               activeTab === 'audit'
-                ? 'border-[#A68B61] text-[#A68B61] font-bold'
-                : 'border-transparent text-[#77766B] hover:text-[#E9E3D5]'
+                ? 'border-[#19D3FF] text-[#19D3FF] font-bold'
+                : 'border-transparent text-[#8B9AAA] hover:text-[#F4F7FA]'
             }`}
           >
             <Clock className="w-3.5 h-3.5" />
@@ -411,39 +411,39 @@ export const ForensicProductPreview: React.FC = () => {
         </div>
 
         {/* Tab Content Panels */}
-        <div className="p-5 sm:p-6 min-h-[260px] bg-[#222421]">
+        <div className="p-5 sm:p-6 min-h-[260px] bg-[#080F17]">
           {/* Tab 1: Financial Consistency Checks */}
           {activeTab === 'checks' && (
             <div className="space-y-3">
               {currentDoc.consistencyChecks.map((chk, i) => (
                 <div
                   key={i}
-                  className={`p-4 rounded-sm border font-mono ${
+                  className={`p-4 rounded-xl border font-mono transition-all ${
                     chk.passed
-                      ? 'bg-[#1C1E1B] border-[#456B58]/40 text-[#E9E3D5]'
-                      : 'bg-[#1C1E1B] border-[#9E3D34]/40 text-[#E9E3D5]'
+                      ? 'bg-[#0D1524] border-[#38D6A3]/30 text-[#F4F7FA]'
+                      : 'bg-[#0D1524] border-[#FF4D5F]/40 text-[#F4F7FA]'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="font-bold text-xs sm:text-sm text-[#E9E3D5] flex items-center space-x-2">
+                    <span className="font-bold text-xs sm:text-sm text-[#F4F7FA] flex items-center space-x-2">
                       {chk.passed ? (
-                        <CheckCircle2 className="w-4 h-4 text-[#456B58] shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-[#38D6A3] shrink-0" />
                       ) : (
-                        <AlertTriangle className="w-4 h-4 text-[#9E3D34] shrink-0" />
+                        <AlertTriangle className="w-4 h-4 text-[#FF4D5F] shrink-0" />
                       )}
                       <span>{chk.name}</span>
                     </span>
                     <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-sm ${
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded ${
                         chk.passed
-                          ? 'bg-[#456B58]/20 text-[#456B58]'
-                          : 'bg-[#9E3D34]/20 text-[#9E3D34]'
+                          ? 'bg-[#38D6A3]/20 text-[#38D6A3] border border-[#38D6A3]/30'
+                          : 'bg-[#FF4D5F]/20 text-[#FF4D5F] border border-[#FF4D5F]/30'
                       }`}
                     >
                       {chk.passed ? 'PASSED' : 'DISCREPANCY DETECTED'}
                     </span>
                   </div>
-                  <p className="text-xs text-[#D0C5B1] leading-relaxed pl-6">{chk.details}</p>
+                  <p className="text-xs text-[#8B9AAA] leading-relaxed pl-6">{chk.details}</p>
                 </div>
               ))}
             </div>
@@ -453,9 +453,9 @@ export const ForensicProductPreview: React.FC = () => {
           {activeTab === 'fields' && (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {Object.entries(currentDoc.extractedFields).map(([key, val]) => (
-                <div key={key} className="p-3.5 rounded-sm bg-[#1C1E1B] border border-[#D0C5B1]/15 font-mono">
-                  <span className="text-[10px] text-[#77766B] uppercase block mb-1">{key}</span>
-                  <span className="text-xs sm:text-sm font-semibold text-[#E9E3D5] truncate block">
+                <div key={key} className="p-3.5 rounded-xl bg-[#0D1524] border border-white/10 font-mono">
+                  <span className="text-[10px] text-[#8B9AAA] uppercase block mb-1">{key}</span>
+                  <span className="text-xs sm:text-sm font-semibold text-[#F4F7FA] truncate block">
                     {val}
                   </span>
                 </div>
@@ -467,10 +467,10 @@ export const ForensicProductPreview: React.FC = () => {
           {activeTab === 'findings' && (
             <div className="space-y-3">
               {currentDoc.findings.length === 0 ? (
-                <div className="p-8 text-center bg-[#1C1E1B] rounded-sm border border-[#D0C5B1]/15 space-y-2">
-                  <CheckCircle2 className="w-10 h-10 text-[#456B58] mx-auto" />
-                  <p className="text-sm font-bold text-[#E9E3D5]">No Suspicious Anomalies Flagged</p>
-                  <p className="text-xs text-[#D0C5B1] max-w-md mx-auto">
+                <div className="p-8 text-center bg-[#0D1524] rounded-xl border border-white/10 space-y-2">
+                  <CheckCircle2 className="w-10 h-10 text-[#38D6A3] mx-auto" />
+                  <p className="text-sm font-bold text-[#F4F7FA]">No Suspicious Anomalies Flagged</p>
+                  <p className="text-xs text-[#8B9AAA] max-w-md mx-auto">
                     All balances, line items, and checksums conformed strictly to authoritative baseline rules.
                   </p>
                 </div>
@@ -478,16 +478,16 @@ export const ForensicProductPreview: React.FC = () => {
                 currentDoc.findings.map((fnd, i) => (
                   <div
                     key={i}
-                    className="p-4 rounded-sm bg-[#1C1E1B] border-l-4 border-l-[#9E3D34] border border-[#D0C5B1]/15 font-mono space-y-1.5"
+                    className="p-4 rounded-xl bg-[#0D1524] border-l-4 border-l-[#FF4D5F] border border-white/10 font-mono space-y-1.5"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-sm text-[#E9E3D5]">{fnd.title}</span>
-                      <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-sm bg-[#9E3D34]/20 text-[#9E3D34]">
+                      <span className="font-bold text-sm text-[#F4F7FA]">{fnd.title}</span>
+                      <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-[#FF4D5F]/20 text-[#FF4D5F] border border-[#FF4D5F]/30">
                         Severity: {fnd.severity}
                       </span>
                     </div>
-                    <div className="p-2 rounded-sm bg-[#222421] text-xs text-[#D0C5B1]">
-                      <strong>Analyst Advisory:</strong> {fnd.note}
+                    <div className="p-2 rounded bg-[#05080D] text-xs text-[#8B9AAA]">
+                      <strong className="text-[#FF4D5F]">Analyst Advisory:</strong> {fnd.note}
                     </div>
                   </div>
                 ))
@@ -498,14 +498,14 @@ export const ForensicProductPreview: React.FC = () => {
           {/* Tab 4: Audit Trail */}
           {activeTab === 'audit' && (
             <div className="space-y-2 font-mono text-xs">
-              <div className="divide-y divide-[#D0C5B1]/10 bg-[#1C1E1B] rounded-sm border border-[#D0C5B1]/15 p-4">
+              <div className="divide-y divide-white/10 bg-[#0D1524] rounded-xl border border-white/10 p-4">
                 {currentDoc.auditEvents.map((evt, i) => (
                   <div key={i} className="py-2.5 flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <span className="text-[#A68B61] font-semibold">{evt.action}</span>
-                      <span className="text-[#77766B]">by {evt.actor}</span>
+                      <span className="text-[#19D3FF] font-semibold">{evt.action}</span>
+                      <span className="text-[#8B9AAA]">by {evt.actor}</span>
                     </div>
-                    <span className="text-[#77766B] text-[11px]">{evt.time}</span>
+                    <span className="text-[#576574] text-[11px]">{evt.time}</span>
                   </div>
                 ))}
               </div>
@@ -514,24 +514,24 @@ export const ForensicProductPreview: React.FC = () => {
         </div>
 
         {/* Footer Actions & Real Application Bridge */}
-        <div className="p-4 sm:p-5 bg-[#1C1E1B] border-t border-[#D0C5B1]/15 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="text-xs font-mono text-[#D0C5B1] flex items-center space-x-2">
-            <span className="w-2 h-2 rounded-full bg-[#456B58]" />
+        <div className="p-4 sm:p-5 bg-[#0D1524] border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="text-xs font-mono text-[#8B9AAA] flex items-center space-x-2">
+            <span className="w-2 h-2 rounded-full bg-[#38D6A3] animate-pulse" />
             <span>Interactive inspection backed by verified production backend services</span>
           </div>
 
           <div className="flex items-center space-x-3">
             <Link
-              to="/console/documents"
-              className="px-4 py-2 rounded-sm bg-[#292B28] text-[#A68B61] border border-[#A68B61]/40 hover:bg-[#292B28]/80 font-mono text-xs font-bold transition-all flex items-center space-x-1.5"
+              to="/customer/documents"
+              className="px-4 py-2 rounded-full bg-[#05080D] text-[#19D3FF] border border-[#19D3FF]/40 hover:bg-[#19D3FF]/10 font-mono text-xs font-bold transition-all flex items-center space-x-1.5"
             >
               <span>Explore Live Document Hub</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
 
             <Link
-              to="/login"
-              className="px-4 py-2 rounded-sm bg-[#A68B61] text-[#1C1E1B] hover:bg-[#BCA177] font-mono text-xs font-bold transition-all flex items-center space-x-1.5"
+              to="/customer/documents"
+              className="px-4 py-2 rounded-full bg-[#19D3FF] text-[#05080D] hover:bg-[#26E6D8] font-mono text-xs font-bold transition-all shadow-[0_0_16px_rgba(25,211,255,0.4)] flex items-center space-x-1.5"
             >
               <span>Analyze Your Document</span>
               <ExternalLink className="w-3.5 h-3.5" />

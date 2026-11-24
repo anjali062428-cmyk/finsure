@@ -1,6 +1,6 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, ArrowRight, Terminal, Search, Shield } from 'lucide-react';
+import { Menu, X, ArrowRight, Search, Shield } from 'lucide-react';
 import { Logo } from '../layout/Logo';
 
 export const FinSureNav: React.FC = () => {

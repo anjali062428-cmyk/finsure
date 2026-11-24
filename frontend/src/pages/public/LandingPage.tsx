@@ -3,26 +3,15 @@ import { Link } from 'react-router-dom';
 import {
   ArrowRight,
   ArrowDown,
-  Terminal,
   Layers,
   FileText,
   Scale,
-  ShieldCheck,
   CheckCircle2,
-  Lock,
 } from 'lucide-react';
 import {
   FinSureNav,
-  RiskCore,
-  TransactionEvent,
-  BehaviorTimeline,
-  FraudNetwork,
-  RiskContribution,
-  EvidencePanel,
   ThreatReplay,
   InvestigationPanel,
-  ModelStatus,
-  MetricBlock,
   ForensicProductPreview,
 } from '../../components/intelligence';
 import { FinancialDocumentHero3D } from '../../components/3d/FinancialDocumentHero3D';
@@ -39,7 +28,7 @@ export const LandingPage: React.FC = () => {
       {/* ========================================================
           HERO — FINANCIAL FORENSICS & VERIFICATION
           ======================================================== */}
-      <section className="relative min-h-screen flex flex-col justify-between pt-28 sm:pt-36 pb-12 px-6 sm:px-12 max-w-7xl mx-auto w-full">
+      <section className="relative min-h-[85vh] flex flex-col justify-between pt-24 sm:pt-32 pb-10 px-6 sm:px-12 max-w-7xl mx-auto w-full">
         {/* Main Asymmetric Hero Grid: Left ~48%, Right ~52% */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center my-auto">
           {/* Hero Left (~48%): Editorial Typography & Direct CTAs */}
@@ -110,7 +99,7 @@ export const LandingPage: React.FC = () => {
             href="#preview"
             className="inline-flex flex-col items-center text-xs font-mono text-[#8B9AAA] hover:text-[#19D3FF] transition-colors group cursor-pointer"
           >
-            <span className="tracking-widest uppercase mb-1">Interactive Product Demonstration</span>
+            <span className="tracking-widest uppercase mb-1">Explore Live Inspection Console</span>
             <ArrowDown className="w-4 h-4 animate-bounce text-[#19D3FF]" />
           </a>
         </div>
@@ -119,15 +108,7 @@ export const LandingPage: React.FC = () => {
       {/* ========================================================
           SECTION 00: INTERACTIVE PRODUCT DEMONSTRATION CONSOLE
           ======================================================== */}
-      <section id="preview" className="py-20 px-6 sm:px-12 max-w-7xl mx-auto w-full">
-        <div className="text-center mb-10">
-          <span className="text-xs font-mono tracking-widest text-[#19D3FF] uppercase block mb-2 font-bold">
-            INTERACTIVE PRODUCT DEMONSTRATION
-          </span>
-          <h2 className="text-3xl sm:text-5xl font-display font-black text-[#F4F7FA]">
-            Real Financial Document Inspection Console
-          </h2>
-        </div>
+      <section id="preview" className="scroll-mt-28 py-12 px-6 sm:px-12 max-w-7xl mx-auto w-full">
         <ForensicProductPreview />
       </section>
 
