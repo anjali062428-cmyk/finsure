@@ -30,16 +30,14 @@ export const FinSureNav: React.FC = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 flex justify-center px-4 sm:px-8 ${
-        isScrolled ? 'pt-2.5 sm:pt-3' : 'pt-5 sm:pt-6'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 flex justify-center px-4 sm:px-8 ${isScrolled ? 'pt-2.5 sm:pt-3' : 'pt-5 sm:pt-6'
+        }`}
     >
       <div
-        className={`w-full max-w-7xl mx-auto rounded-full transition-all duration-300 flex items-center justify-between px-5 sm:px-8 ${
-          isScrolled
+        className={`w-full max-w-7xl mx-auto rounded-full transition-all duration-300 flex items-center justify-between px-5 sm:px-8 ${isScrolled
             ? 'py-2.5 bg-[#05070D]/85 backdrop-blur-xl border border-[rgba(25,211,255,0.22)] shadow-[0_8px_32px_rgba(0,0,0,0.85),0_0_15px_rgba(25,211,255,0.08)]'
             : 'py-3.5 bg-[#070B14]/70 backdrop-blur-md border border-white/10'
-        }`}
+          }`}
       >
         {/* LEFT: FinSure logo + FINANCIAL FORENSICS badge */}
         <div className="flex items-center space-x-2 shrink-0">

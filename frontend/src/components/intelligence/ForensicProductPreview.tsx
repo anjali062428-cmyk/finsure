@@ -272,21 +272,20 @@ export const ForensicProductPreview: React.FC = () => {
               <button
                 key={doc.id}
                 onClick={() => setSelectedDocId(doc.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center space-x-1.5 cursor-pointer ${
-                  isSelected
+                className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center space-x-1.5 cursor-pointer ${isSelected
                     ? 'bg-[#19D3FF]/15 text-[#19D3FF] border border-[#19D3FF]/50 shadow-[0_0_12px_rgba(25,211,255,0.25)] font-bold'
                     : 'bg-[#0D1524] text-[#8B9AAA] border border-white/10 hover:text-[#F4F7FA] hover:border-[#19D3FF]/30'
-                }`}
+                  }`}
               >
                 <FileText className="w-3.5 h-3.5 shrink-0" />
                 <span className="truncate max-w-[140px] sm:max-w-[180px]">
                   {doc.type === 'bank_statement'
                     ? 'Bank Statement'
                     : doc.type === 'invoice' && doc.isDuplicate
-                    ? 'Duplicate Filing'
-                    : doc.type === 'invoice'
-                    ? 'Commercial Invoice'
-                    : 'Payment Claim'}
+                      ? 'Duplicate Filing'
+                      : doc.type === 'invoice'
+                        ? 'Commercial Invoice'
+                        : 'Payment Claim'}
                 </span>
                 {doc.isDuplicate && (
                   <span className="w-1.5 h-1.5 rounded-full bg-[#FF4D5F] shrink-0 animate-pulse" />
@@ -363,11 +362,10 @@ export const ForensicProductPreview: React.FC = () => {
         <div className="flex border-b border-white/10 px-4 sm:px-5 bg-[#0A101C] gap-6 text-xs font-mono overflow-x-auto">
           <button
             onClick={() => setActiveTab('checks')}
-            className={`py-3 border-b-2 font-medium transition-colors cursor-pointer flex items-center space-x-1.5 ${
-              activeTab === 'checks'
+            className={`py-3 border-b-2 font-medium transition-colors cursor-pointer flex items-center space-x-1.5 ${activeTab === 'checks'
                 ? 'border-[#19D3FF] text-[#19D3FF] font-bold'
                 : 'border-transparent text-[#8B9AAA] hover:text-[#F4F7FA]'
-            }`}
+              }`}
           >
             <Shield className="w-3.5 h-3.5" />
             <span>Financial Consistency ({currentDoc.consistencyChecks.length})</span>
@@ -375,11 +373,10 @@ export const ForensicProductPreview: React.FC = () => {
 
           <button
             onClick={() => setActiveTab('fields')}
-            className={`py-3 border-b-2 font-medium transition-colors cursor-pointer flex items-center space-x-1.5 ${
-              activeTab === 'fields'
+            className={`py-3 border-b-2 font-medium transition-colors cursor-pointer flex items-center space-x-1.5 ${activeTab === 'fields'
                 ? 'border-[#19D3FF] text-[#19D3FF] font-bold'
                 : 'border-transparent text-[#8B9AAA] hover:text-[#F4F7FA]'
-            }`}
+              }`}
           >
             <Layers className="w-3.5 h-3.5" />
             <span>Extracted Fields & Schema</span>
@@ -387,11 +384,10 @@ export const ForensicProductPreview: React.FC = () => {
 
           <button
             onClick={() => setActiveTab('findings')}
-            className={`py-3 border-b-2 font-medium transition-colors cursor-pointer flex items-center space-x-1.5 ${
-              activeTab === 'findings'
+            className={`py-3 border-b-2 font-medium transition-colors cursor-pointer flex items-center space-x-1.5 ${activeTab === 'findings'
                 ? 'border-[#19D3FF] text-[#19D3FF] font-bold'
                 : 'border-transparent text-[#8B9AAA] hover:text-[#F4F7FA]'
-            }`}
+              }`}
           >
             <AlertCircle className="w-3.5 h-3.5" />
             <span>Forensic Findings ({currentDoc.findings.length})</span>
@@ -399,11 +395,10 @@ export const ForensicProductPreview: React.FC = () => {
 
           <button
             onClick={() => setActiveTab('audit')}
-            className={`py-3 border-b-2 font-medium transition-colors cursor-pointer flex items-center space-x-1.5 ${
-              activeTab === 'audit'
+            className={`py-3 border-b-2 font-medium transition-colors cursor-pointer flex items-center space-x-1.5 ${activeTab === 'audit'
                 ? 'border-[#19D3FF] text-[#19D3FF] font-bold'
                 : 'border-transparent text-[#8B9AAA] hover:text-[#F4F7FA]'
-            }`}
+              }`}
           >
             <Clock className="w-3.5 h-3.5" />
             <span>Audit Trail ({currentDoc.auditEvents.length})</span>
@@ -418,11 +413,10 @@ export const ForensicProductPreview: React.FC = () => {
               {currentDoc.consistencyChecks.map((chk, i) => (
                 <div
                   key={i}
-                  className={`p-4 rounded-xl border font-mono transition-all ${
-                    chk.passed
+                  className={`p-4 rounded-xl border font-mono transition-all ${chk.passed
                       ? 'bg-[#0D1524] border-[#38D6A3]/30 text-[#F4F7FA]'
                       : 'bg-[#0D1524] border-[#FF4D5F]/40 text-[#F4F7FA]'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="font-bold text-xs sm:text-sm text-[#F4F7FA] flex items-center space-x-2">
@@ -434,11 +428,10 @@ export const ForensicProductPreview: React.FC = () => {
                       <span>{chk.name}</span>
                     </span>
                     <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                        chk.passed
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded ${chk.passed
                           ? 'bg-[#38D6A3]/20 text-[#38D6A3] border border-[#38D6A3]/30'
                           : 'bg-[#FF4D5F]/20 text-[#FF4D5F] border border-[#FF4D5F]/30'
-                      }`}
+                        }`}
                     >
                       {chk.passed ? 'PASSED' : 'DISCREPANCY DETECTED'}
                     </span>
