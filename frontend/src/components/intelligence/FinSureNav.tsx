@@ -21,11 +21,11 @@ export const FinSureNav: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { label: 'Intelligence', href: '#signal' },
-    { label: 'Detection', href: '#behavior' },
+    { label: 'Product Preview', href: '#preview' },
+    { label: 'Extraction', href: '#extraction' },
+    { label: 'Tamper Audit', href: '#audit' },
     { label: 'Investigation', href: '#investigation' },
-    { label: 'Network', href: '#network' },
-    { label: 'Security', href: '#decision' },
+    { label: 'Platform Console', href: '/console' },
   ];
 
   return (
@@ -41,12 +41,12 @@ export const FinSureNav: React.FC = () => {
             : 'py-3.5 bg-[#070B14]/70 backdrop-blur-md border border-white/10'
         }`}
       >
-        {/* LEFT: FinSure logo + small FINANCIAL SECURITY descriptor */}
+        {/* LEFT: FinSure logo + FINANCIAL FORENSICS badge */}
         <div className="flex items-center space-x-2 shrink-0">
           <Link to="/" className="flex items-center space-x-2 group">
             <Logo size="sm" showSubtitle={false} />
-            <span className="hidden xl:inline-block text-[10px] font-mono tracking-widest text-[#19D3FF] uppercase px-2 py-0.5 rounded bg-[#19D3FF]/10 border border-[#19D3FF]/20">
-              FINANCIAL SECURITY
+            <span className="hidden sm:inline-block text-[10px] font-mono tracking-widest text-[#19D3FF] uppercase px-2 py-0.5 rounded bg-[#19D3FF]/10 border border-[#19D3FF]/20">
+              FINANCIAL FORENSICS
             </span>
           </Link>
         </div>
@@ -79,7 +79,7 @@ export const FinSureNav: React.FC = () => {
           {/* System Control Indicator */}
           <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-[#0D1422] border border-white/5 text-[10px] font-mono text-[#38D6A3]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#38D6A3] animate-pulse" />
-            <span className="text-[#8B9AAA]">LIVE</span>
+            <span className="text-[#8B9AAA]">OPERATIONAL</span>
           </div>
 
           <Link
@@ -90,11 +90,10 @@ export const FinSureNav: React.FC = () => {
           </Link>
 
           <Link
-            to="/console"
+            to="/customer/documents"
             className="inline-flex items-center space-x-1.5 text-xs font-mono font-bold text-[#05070D] bg-[#19D3FF] hover:bg-[#19D3FF]/90 px-4 py-2 rounded-full transition-all shadow-[0_0_16px_rgba(25,211,255,0.4)]"
           >
-            <Terminal className="w-3.5 h-3.5" />
-            <span>Open Console</span>
+            <span>Analyze a Document</span>
             <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
