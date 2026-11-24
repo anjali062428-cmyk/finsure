@@ -51,15 +51,18 @@ data/*.db
 *.png
 *.jpg
 *.jpeg
-ml/artifacts/
 *.onnx
-*.pt
 *.pth
 *.bin
-*.joblib
 *.pkl
 mlflow/
 mlruns/
+
+# Explicitly track production model artifacts
+!ml/artifacts/**
+!ml/artifacts/*.pt
+!ml/artifacts/*.joblib
+!ml/artifacts/*.json
 
 # Large generated reports and evidence packs
 reference/reports/generated/
