@@ -15,23 +15,29 @@ PyJWT>=2.8.0
 argon2-cffi>=23.1.0
 cryptography>=42.0.0
 
-# Machine Learning & Data Processing
+# Machine Learning, Explainability & Data Processing
 numpy>=1.24.0,<3.0.0
 pandas>=2.0.0,<3.0.0
 scipy>=1.11.0
 scikit-learn>=1.4.0
 xgboost>=2.0.0
 joblib>=1.3.0
+shap>=0.44.0
 
 # Deep Learning (CPU-optimized)
 torch>=2.0.0,<2.6.0
 torch-geometric>=2.5.0
 
-# Financial Document Extraction & Forensics
+# Financial Documents, Forensics & Reporting
 PyMuPDF>=1.23.0
 pdfplumber>=0.10.0
+pypdf>=4.0.0
 pytesseract>=0.3.10
 Pillow>=10.0.0
+reportlab>=4.0.0
+qrcode>=7.4.0
 
-# Utilities
+# Infrastructure & Utilities
+PyYAML>=6.0.0
+redis>=5.0.0
 python-dotenv>=1.0.0
