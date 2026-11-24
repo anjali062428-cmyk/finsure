@@ -6,6 +6,7 @@ import {
   Users,
   ShieldAlert,
   FileText,
+  FolderOpen,
 } from 'lucide-react';
 import { Sidebar, NavItem } from '../components/layout/Sidebar';
 import { Topbar } from '../components/layout/Topbar';
@@ -24,6 +25,11 @@ export const CustomerLayout: React.FC = () => {
       label: 'Payments',
       path: '/customer/transactions',
       icon: <ArrowRightLeft className="w-4 h-4" />,
+    },
+    {
+      label: 'My Documents',
+      path: '/customer/documents',
+      icon: <FolderOpen className="w-4 h-4" />,
     },
     {
       label: 'Trusted Payees',

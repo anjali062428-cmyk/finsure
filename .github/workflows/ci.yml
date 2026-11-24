@@ -1,0 +1,63 @@
+name: FinSure CI/CD Pipeline
+
+on:
+  push:
+    branches: [ master, main, 'feature/**' ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  backend-test:
+    name: Backend Test & Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-eng libgl1
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Core Test Suites
+        run: |
+          python -m unittest backend.tests.test_data_phase1 backend.tests.test_features_phase2 backend.tests.test_document_phase2
+
+  frontend-build:
+    name: Frontend Lint & Production Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Run TypeScript Check
+        working-directory: frontend
+        run: npm run lint
+
+      - name: Build Production Bundle
+        working-directory: frontend
+        run: npm run build

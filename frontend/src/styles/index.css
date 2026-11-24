@@ -1,6 +1,86 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  /* FinSure Color Tokens */
+  --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-deep: var(--panel-deep);
+  --color-surface-muted: var(--surface-elevated);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-text: var(--text-primary);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-muted: var(--accent-muted);
+  --color-accent-electric: var(--accent-cyan);
+  --color-accent-teal: var(--accent-teal);
+  --color-accent-soft: var(--accent-softCyan);
+
+  --color-navy-950: #03060A;
+  --color-navy-900: #05080D;
+  --color-navy-850: #080F17;
+  --color-navy-800: #0E1721;
+  --color-navy-750: #121E29;
+  --color-navy-700: #162533;
+
+  --color-tealBrand: #19D3C5;
+  --color-tealBrand-hover: #26E6D8;
+  --color-tealBrand-soft: #6FEBE0;
+  --color-tealBrand-blue: #6C9CFF;
+
+  --color-fraud-critical: #FF4D5F;
+  --color-fraud-warning: #FFB84D;
+  --color-fraud-safe: #38D6A3;
+
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-success-border: var(--success-border);
+
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-warning-border: var(--warning-border);
+
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-danger-border: var(--danger-border);
+
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+  --color-info-border: var(--info-border);
+
+  --color-risk-low: var(--risk-low);
+  --color-risk-medium: var(--risk-medium);
+  --color-risk-high: var(--risk-high);
+  --color-risk-critical: var(--risk-critical);
+
+  /* Typography */
+  --font-display: "Space Grotesk", "Sora", sans-serif;
+  --font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", "Geist Mono", "JetBrains Mono", monospace;
+
+  /* Shadows */
+  --shadow-subtle: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.55);
+  --shadow-modal: 0 24px 48px -12px rgba(0, 0, 0, 0.85);
+  --shadow-teal-glow: 0 0 32px -4px rgba(25, 211, 197, 0.28);
+  --shadow-teal-subtle: 0 0 16px -2px rgba(25, 211, 197, 0.18);
+  --shadow-blue-glow: 0 0 32px -4px rgba(108, 156, 255, 0.25);
+  --shadow-critical-glow: 0 0 32px -4px rgba(255, 77, 95, 0.28);
+
+  /* Border Radius */
+  --radius-card: 10px;
+  --radius-button: 6px;
+  --radius-badge: 4px;
+}
 
 html, body {
   overflow-x: hidden;

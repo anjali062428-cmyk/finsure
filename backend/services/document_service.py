@@ -17,10 +17,13 @@ import csv
 from backend.models.document import (
     DocumentRecord, DocumentType, DocumentStatus,
     VerificationVerdict, ReviewStatus, DocumentAuditEntry,
-    DocumentUploadResponse, AuthorizedTransaction
+    DocumentUploadResponse, AuthorizedTransaction,
+    DocumentExtractionResult
 )
 from backend.repositories.document_repo import DocumentRepository
 from backend.models.auth import User
+from backend.core.config import doc_config
+from backend.services.parsing_service import ParsingService
 
 logger = logging.getLogger("finsure.document_service")
 
@@ -50,10 +53,16 @@ MIME_MAPPINGS = {
 class DocumentService:
     """Manages document validation, storage, deduplication, and IDOR-safe access."""
 
-    def __init__(self, repo: DocumentRepository, storage_dir: Optional[str] = None):
+    def __init__(
+        self,
+        repo: DocumentRepository,
+        storage_dir: Optional[str] = None,
+        parsing_service: Optional[ParsingService] = None
+    ):
         self.repo = repo
-        self.storage_dir = storage_dir or os.getenv("DOCUMENT_STORAGE_DIR", "data/uploads")
+        self.storage_dir = storage_dir or doc_config.STORAGE_DIR
         os.makedirs(os.path.abspath(self.storage_dir), exist_ok=True)
+        self.parsing_service = parsing_service or ParsingService(self.repo)
 
     # ------------------------------------------------------------------
     # Validation Helpers
@@ -121,27 +130,13 @@ class DocumentService:
         Checks whether Tesseract OCR executable is available on the system.
         Fails gracefully without throwing exceptions.
         """
-        import shutil
-        tesseract_cmd = shutil.which("tesseract")
+        tesseract_cmd = doc_config.get_tesseract_cmd()
         if tesseract_cmd:
             return {
                 "available": True,
                 "executable": tesseract_cmd,
                 "status": "Ready for scanned document OCR extraction."
             }
-        
-        # Check standard Windows paths
-        std_paths = [
-            r"C:\Program Files\Tesseract-OCR\tesseract.exe",
-            r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"
-        ]
-        for p in std_paths:
-            if os.path.exists(p):
-                return {
-                    "available": True,
-                    "executable": p,
-                    "status": "Ready for scanned document OCR extraction."
-                }
 
         return {
             "available": False,
@@ -444,3 +439,180 @@ class DocumentService:
         count = self.repo.batch_save_authorized_transactions(records)
         logger.info(f"Analyst {user.user_id} imported {count} authorized transactions.")
         return count
+
+    # ------------------------------------------------------------------
+    # Parsing, Consistency Checks & Verification Orchestration
+    # ------------------------------------------------------------------
+
+    def parse_and_verify(self, document_id: str, requesting_user: User) -> DocumentExtractionResult:
+        """
+        Executes full digital/OCR parsing, runs financial consistency rules,
+        matches with authorized ledger, and updates document verdict.
+        IDOR protected: Customers can only parse their own documents.
+        """
+        doc = self.get_document(document_id, requesting_user)
+        abs_path = os.path.abspath(doc.storage_path)
+
+        if not os.path.exists(abs_path):
+            raise FileNotFoundError(f"Underlying document file is missing on storage: {doc.storage_path}")
+
+        result = self.parsing_service.parse_and_verify(doc, abs_path)
+
+        # Record audit event
+        self.repo.record_audit(DocumentAuditEntry(
+            audit_id=f"aud_{uuid.uuid4().hex[:12]}",
+            document_id=document_id,
+            user_id=requesting_user.user_id,
+            action="parse_and_verify",
+            details={
+                "verdict": result.verdict.value,
+                "is_ocr_applied": result.is_ocr_applied,
+                "findings_count": len(result.findings),
+                "checks_count": len(result.consistency_checks),
+                "execution_time_seconds": result.execution_time_seconds
+            },
+            timestamp=datetime.now(timezone.utc).isoformat()
+        ))
+
+        return result
+
+    def get_extracted_data(self, document_id: str, requesting_user: User) -> DocumentExtractionResult:
+        """
+        Returns structured extraction results, checks, and findings.
+        If document has not yet been parsed, triggers parse_and_verify automatically.
+        """
+        return self.parse_and_verify(document_id, requesting_user)
+
+    def update_review_status(
+        self,
+        document_id: str,
+        new_status: ReviewStatus,
+        notes: Optional[str],
+        requesting_user: User
+    ) -> DocumentRecord:
+        """
+        Updates document review status (suspected -> reviewed -> confirmed).
+        Strictly restricted to analysts, compliance officers, and administrators.
+        """
+        if requesting_user.role not in ["fraud_analyst", "analyst", "compliance_officer", "admin"]:
+            raise PermissionError("Forbidden: Only fraud analysts or administrators can update review status.")
+
+        doc = self.repo.get_document(document_id)
+        if not doc:
+            raise LookupError(f"Document '{document_id}' not found.")
+
+        updated = self.repo.update_document(
+            document_id=document_id,
+            review_status=new_status,
+            metadata_update={
+                "reviewed_by": requesting_user.user_id,
+                "reviewed_at": datetime.now(timezone.utc).isoformat(),
+                "analyst_review_notes": notes
+            }
+        )
+
+        self.repo.record_audit(DocumentAuditEntry(
+            audit_id=f"aud_{uuid.uuid4().hex[:12]}",
+            document_id=document_id,
+            user_id=requesting_user.user_id,
+            action="review_status_updated",
+            details={
+                "previous_status": doc.review_status.value,
+                "new_status": new_status.value,
+                "notes": notes
+            },
+            timestamp=datetime.now(timezone.utc).isoformat()
+        ))
+
+        return updated
+
+    def create_case_from_document(
+        self,
+        document_id: str,
+        priority: str,
+        initial_notes: Optional[str],
+        requesting_user: User
+    ) -> Dict[str, Any]:
+        """
+        Escalates a document with verification findings to a formal Case Docket.
+        Registers the document and its findings into the Case Evidence Store.
+        """
+        doc = self.get_document(document_id, requesting_user)
+
+        from backend.repositories.case_repo import CaseRepository
+        from backend.models.case import (
+            Case, CaseStatus, CasePriority, EvidenceType, CaseEvidence
+        )
+
+        case_repo = CaseRepository()
+        case_id = f"case_doc_{uuid.uuid4().hex[:8]}"
+        now_iso = datetime.now(timezone.utc).isoformat()
+
+        # Determine priority
+        p_upper = priority.upper().strip()
+        case_priority = CasePriority.HIGH if p_upper not in [p.value for p in CasePriority] else CasePriority(p_upper)
+
+        # Risk score heuristic
+        risk_score = 85.0 if doc.verdict == VerificationVerdict.HIGH_RISK_INDICATORS else 55.0
+
+        new_case = Case(
+            case_id=case_id,
+            incident_id=None,
+            alert_id=None,
+            transaction_id=doc.document_id,
+            user_id=doc.user_id,
+            status=CaseStatus.NEW,
+            priority=case_priority,
+            risk_score=risk_score,
+            risk_band="CRITICAL" if risk_score >= 80 else "HIGH",
+            decision="document_verification_review",
+            scam_type=f"Document Anomaly ({doc.document_type.value})",
+            customer_reported=(requesting_user.role == "customer"),
+            opened_at=now_iso,
+            updated_at=now_iso
+        )
+        case_repo.create_case(new_case)
+
+        ev_id = f"ev_{uuid.uuid4().hex[:8]}"
+        evidence_payload = {
+            "document_id": doc.document_id,
+            "filename": doc.filename,
+            "sha256": doc.sha256_hash,
+            "document_type": doc.document_type.value,
+            "claim_label": doc.claim_label,
+            "verdict": doc.verdict.value if doc.verdict else "unverified",
+            "escalated_by": requesting_user.user_id,
+            "notes": initial_notes
+        }
+        case_repo.add_case_evidence(CaseEvidence(
+            evidence_id=ev_id,
+            case_id=case_id,
+            evidence_type=EvidenceType.EXTERNAL_FILE,
+            source_ref=doc.document_id,
+            added_by=requesting_user.user_id,
+            content_hash=doc.sha256_hash,
+            metadata=evidence_payload,
+            created_at=now_iso
+        ))
+
+        # Log audit entry
+        self.repo.record_audit(DocumentAuditEntry(
+            audit_id=f"aud_{uuid.uuid4().hex[:12]}",
+            document_id=document_id,
+            user_id=requesting_user.user_id,
+            action="escalate_to_case",
+            details={
+                "case_id": case_id,
+                "priority": case_priority.value,
+                "evidence_id": ev_id
+            },
+            timestamp=now_iso
+        ))
+
+        return {
+            "status": "success",
+            "case_id": case_id,
+            "document_id": document_id,
+            "priority": case_priority.value,
+            "message": f"Successfully created Case Docket {case_id} for document '{doc.filename}'."
+        }

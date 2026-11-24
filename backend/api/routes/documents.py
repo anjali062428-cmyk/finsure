@@ -11,7 +11,8 @@ from fastapi.responses import FileResponse
 from backend.models.auth import User
 from backend.models.document import (
     DocumentRecord, DocumentType, DocumentStatus,
-    DocumentUploadResponse, DocumentAuditEntry, AuthorizedTransaction
+    DocumentUploadResponse, DocumentAuditEntry, AuthorizedTransaction,
+    DocumentExtractionResult, ReviewStatusUpdateRequest, CreateCaseFromDocRequest
 )
 from backend.services.document_service import DocumentService, MAX_DOCUMENT_SIZE
 from backend.api.dependencies.auth import get_current_user, require_role
@@ -190,6 +191,112 @@ async def get_document_audit(
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
 
     return service.repo.list_audit_entries(document_id)
+
+
+@router.post(
+    "/{document_id}/parse",
+    response_model=DocumentExtractionResult,
+    summary="Parse and verify document",
+    description="Extracts structured fields (digital text or bounded OCR), runs financial consistency checks, queries authorized ledger, and computes verdict."
+)
+async def parse_document(
+    document_id: str,
+    current_user: User = Depends(get_current_user),
+    service: DocumentService = Depends(get_document_service)
+) -> DocumentExtractionResult:
+    try:
+        return service.parse_and_verify(document_id, requesting_user=current_user)
+    except LookupError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except PermissionError as e:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Parsing error: {str(e)}")
+
+
+@router.get(
+    "/{document_id}/extracted-data",
+    response_model=DocumentExtractionResult,
+    summary="Get document extracted data and verification findings",
+    description="Returns extracted financial fields, rule consistency check results, findings, and matched ledger records."
+)
+async def get_extracted_data(
+    document_id: str,
+    current_user: User = Depends(get_current_user),
+    service: DocumentService = Depends(get_document_service)
+) -> DocumentExtractionResult:
+    try:
+        return service.get_extracted_data(document_id, requesting_user=current_user)
+    except LookupError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except PermissionError as e:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Data retrieval error: {str(e)}")
+
+
+@router.post(
+    "/{document_id}/review",
+    response_model=DocumentRecord,
+    summary="Update document review status",
+    description="Updates analyst review status (suspected -> reviewed -> confirmed). Analysts and admins only."
+)
+@router.post(
+    "/{document_id}/review-status",
+    response_model=DocumentRecord,
+    include_in_schema=False
+)
+async def update_review_status(
+    document_id: str,
+    payload: ReviewStatusUpdateRequest,
+    current_user: User = Depends(require_role(["fraud_analyst", "analyst", "compliance_officer", "admin"])),
+    service: DocumentService = Depends(get_document_service)
+) -> DocumentRecord:
+    try:
+        return service.update_review_status(
+            document_id=document_id,
+            new_status=payload.review_status,
+            notes=payload.notes,
+            requesting_user=current_user
+        )
+    except LookupError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except PermissionError as e:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
+
+
+@router.post(
+    "/{document_id}/create-case",
+    summary="Escalate document to investigation case docket",
+    description="Creates a formal Case Docket linked to this document and registers document metadata & findings into the immutable evidence binder."
+)
+@router.post(
+    "/{document_id}/escalate",
+    include_in_schema=False
+)
+async def create_case_from_document(
+    document_id: str,
+    payload: CreateCaseFromDocRequest,
+    current_user: User = Depends(get_current_user),
+    service: DocumentService = Depends(get_document_service)
+):
+    try:
+        return service.create_case_from_document(
+            document_id=document_id,
+            priority=payload.priority,
+            initial_notes=payload.initial_notes,
+            requesting_user=current_user
+        )
+    except LookupError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except PermissionError as e:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
 # ------------------------------------------------------------------

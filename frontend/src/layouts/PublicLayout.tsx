@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Moon, Sun, Menu, X, ArrowRight, Search } from 'lucide-react';
 import { Logo } from '../components/layout/Logo';

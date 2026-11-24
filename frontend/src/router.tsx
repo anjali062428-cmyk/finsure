@@ -69,6 +69,12 @@ import {
   AdminSystemPage,
 } from './pages/admin';
 
+// Document Pages
+import {
+  DocumentListPage,
+  DocumentDetailPage,
+} from './pages/documents';
+
 // 404 Page
 import { NotFoundPage } from './pages/NotFoundPage';
 
@@ -104,6 +110,8 @@ export const router = createBrowserRouter([
       { path: 'payees', element: <CustomerPayeesPage /> },
       { path: 'security', element: <CustomerSecurityPage /> },
       { path: 'reports', element: <CustomerReportsPage /> },
+      { path: 'documents', element: <DocumentListPage /> },
+      { path: 'documents/:id', element: <DocumentDetailPage /> },
     ],
   },
 

@@ -523,3 +523,91 @@ class AuthService:
             metadata={"challenge_id": challenge_id}
         )
         return True, "Step-up challenge successfully verified.", step_up_token
+
+    # -------------------------------------------------------------
+    # Administrative User Governance
+    # -------------------------------------------------------------
+    def list_users(
+        self,
+        role: Optional[str] = None,
+        status: Optional[str] = None,
+        search: Optional[str] = None,
+        limit: int = 50,
+        offset: int = 0,
+        actor_id: Optional[str] = None,
+        request_id: Optional[str] = None,
+        ip: Optional[str] = None
+    ) -> Tuple[List[User], int]:
+        """Lists registered platform users with filtering and pagination."""
+        users, total = self.auth_repo.list_users(
+            role=role,
+            status=status,
+            search=search,
+            limit=limit,
+            offset=offset
+        )
+        return users, total
+
+    def update_user_status(
+        self,
+        target_user_id: str,
+        new_status: str,
+        actor_id: str,
+        request_id: Optional[str] = None,
+        ip: Optional[str] = None
+    ) -> User:
+        """Modifies user status (active, suspended, locked). Revokes sessions on suspension."""
+        valid_statuses = {"active", "suspended", "locked", "pending_verification"}
+        if new_status not in valid_statuses:
+            raise ValueError(f"Invalid account status '{new_status}'. Allowed: {list(valid_statuses)}")
+
+        user = self.auth_repo.get_user_by_id(target_user_id)
+        if not user:
+            raise ValueError(f"User '{target_user_id}' not found.")
+
+        # Guard against admin self-suspension
+        if target_user_id == actor_id and new_status == "suspended":
+            raise ValueError("Administrators cannot suspend their own active administrative account.")
+
+        updated = self.auth_repo.update_user_status(target_user_id, new_status)
+
+        # If suspended or locked, revoke all existing refresh tokens
+        if new_status in ("suspended", "locked"):
+            self.auth_repo.revoke_all_user_tokens(target_user_id, datetime.now(timezone.utc).isoformat())
+
+        self._log_audit_event(
+            "admin_user_status_update", "success", actor_id, "web", ip, request_id,
+            metadata={"target_user_id": target_user_id, "new_status": new_status, "previous_status": user.account_status}
+        )
+        return updated
+
+    def update_user_role(
+        self,
+        target_user_id: str,
+        new_role: str,
+        actor_id: str,
+        request_id: Optional[str] = None,
+        ip: Optional[str] = None
+    ) -> User:
+        """Updates user's assigned RBAC role."""
+        if new_role not in config.VALID_ROLES:
+            raise ValueError(f"Invalid role '{new_role}'. Allowed: {list(config.VALID_ROLES)}")
+
+        user = self.auth_repo.get_user_by_id(target_user_id)
+        if not user:
+            raise ValueError(f"User '{target_user_id}' not found.")
+
+        # Guard against self-demoting the last admin
+        if target_user_id == actor_id and new_role != "admin":
+            raise ValueError("Administrators cannot demote their own active administrative role.")
+
+        updated = self.auth_repo.update_user_role(target_user_id, new_role)
+
+        # Revoke tokens to force re-authentication with new claims
+        self.auth_repo.revoke_all_user_tokens(target_user_id, datetime.now(timezone.utc).isoformat())
+
+        self._log_audit_event(
+            "admin_user_role_update", "success", actor_id, "web", ip, request_id,
+            metadata={"target_user_id": target_user_id, "new_role": new_role, "previous_role": user.role}
+        )
+        return updated

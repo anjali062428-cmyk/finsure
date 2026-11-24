@@ -22,7 +22,8 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
 from backend.services.model_service import ModelRegistry
-from backend.api.routes import health, transactions, auth, incidents, alerts, cases, documents
+from backend.core.config import config
+from backend.api.routes import health, transactions, auth, incidents, alerts, cases, documents, users, policies
 
 # Configure structured logging
 logging.basicConfig(
@@ -42,11 +43,14 @@ async def lifespan(app: FastAPI):
     """
     logger.info("Initializing FinSure Application Lifespan...")
     try:
+        # Validate security configuration before accepting traffic
+        config.validate_security_environment()
+        
         registry = ModelRegistry.get_instance()
         registry.load_all_artifacts()
         logger.info("All model artifacts primed and ready for inference.")
     except Exception as e:
-        logger.critical(f"Failed to initialize model registry at startup: {e}")
+        logger.critical(f"Failed to initialize application at startup: {e}")
         raise e
     yield
     logger.info("Shutting down FinSure Application Lifespan...")
@@ -66,9 +70,9 @@ app = FastAPI(
 # -------------------------------------------------------------
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, restrict to FinSure domain
+    allow_origins=config.get_cors_origins(),
     allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["*"],
     expose_headers=["X-Request-ID", "X-Process-Time-Ms", "X-Response-Time-Ms"]
 )
@@ -133,10 +137,14 @@ async def security_and_telemetry_middleware(request: Request, call_next):
     # 3. Process Request
     response = await call_next(request)
 
-    # 4. Attach telemetry headers
+    # 4. Attach telemetry and security headers
     elapsed_ms = round((time.perf_counter() - t_start) * 1000.0, 3)
     response.headers["X-Request-ID"] = req_id
     response.headers["X-Process-Time-Ms"] = str(elapsed_ms)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
 
     return response
 
@@ -200,6 +208,8 @@ app.include_router(incidents.router)
 app.include_router(alerts.router)
 app.include_router(cases.router)
 app.include_router(documents.router)
+app.include_router(users.router)
+app.include_router(policies.router)
 
 
 if __name__ == "__main__":

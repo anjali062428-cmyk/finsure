@@ -13,3 +13,4 @@ export * from './AlertItem';
 export * from './ModelStatus';
 export * from './FinSureNav';
 export * from './RiskCore';
+export * from './ForensicProductPreview';

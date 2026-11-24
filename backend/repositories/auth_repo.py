@@ -8,7 +8,7 @@ import os
 import sqlite3
 import threading
 import logging
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Tuple
 from datetime import datetime, timezone, timedelta
 
 from backend.models.auth import User, OTPRecord, RefreshTokenRecord, StepUpChallenge, AuthAuditLog
@@ -261,6 +261,91 @@ class AuthRepository:
             user.account_status = "active"
         if account_status is not None:
             user.account_status = account_status
+        user.updated_at = now_str
+        return self.update_user(user)
+
+    def list_users(
+        self,
+        role: Optional[str] = None,
+        status: Optional[str] = None,
+        search: Optional[str] = None,
+        limit: int = 50,
+        offset: int = 0
+    ) -> Tuple[List[User], int]:
+        """
+        Lists users with optional role, status, and search filters with pagination.
+        Returns: (users_list, total_count)
+        """
+        query_conditions = []
+        params: List[Any] = []
+
+        if role:
+            query_conditions.append("role = ?")
+            params.append(role)
+
+        if status:
+            query_conditions.append("account_status = ?")
+            params.append(status)
+
+        if search:
+            search_param = f"%{search.strip().lower()}%"
+            query_conditions.append("(LOWER(full_name) LIKE ? OR LOWER(email) LIKE ? OR phone LIKE ? OR user_id LIKE ?)")
+            params.extend([search_param, search_param, search_param, search_param])
+
+        where_clause = f"WHERE {' AND '.join(query_conditions)}" if query_conditions else ""
+
+        with self._lock:
+            with self._get_connection() as conn:
+                cursor = conn.cursor()
+                
+                # Count total matching rows
+                count_query = f"SELECT COUNT(*) as total FROM users {where_clause}"
+                cursor.execute(count_query, params)
+                total_count = cursor.fetchone()["total"]
+
+                # Fetch paginated rows ordered by creation date
+                fetch_query = f"""
+                    SELECT * FROM users 
+                    {where_clause} 
+                    ORDER BY created_at DESC 
+                    LIMIT ? OFFSET ?
+                """
+                cursor.execute(fetch_query, params + [max(1, min(limit, 100)), max(0, offset)])
+                rows = cursor.fetchall()
+                users = [self._row_to_user(r) for r in rows]
+
+                return users, total_count
+
+    def update_user_status(
+        self,
+        user_id: str,
+        new_status: str,
+        locked_until: Optional[str] = None
+    ) -> Optional[User]:
+        """Updates account status (active, suspended, locked) and lockout timestamp."""
+        user = self.get_user_by_id(user_id)
+        if not user:
+            return None
+        now_str = datetime.now(timezone.utc).isoformat()
+        user.account_status = new_status
+        user.locked_until = locked_until
+        if new_status == "active":
+            user.failed_login_count = 0
+            user.locked_until = None
+        user.updated_at = now_str
+        return self.update_user(user)
+
+    def update_user_role(
+        self,
+        user_id: str,
+        new_role: str
+    ) -> Optional[User]:
+        """Updates user's assigned RBAC role."""
+        user = self.get_user_by_id(user_id)
+        if not user:
+            return None
+        now_str = datetime.now(timezone.utc).isoformat()
+        user.role = new_role
         user.updated_at = now_str
         return self.update_user(user)
 
