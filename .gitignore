@@ -48,6 +48,9 @@ data/*.db
 !ml/data/schemas/**
 
 # Model artifacts and weights
+*.png
+*.jpg
+*.jpeg
 ml/artifacts/
 *.onnx
 *.pt
